@@ -60,7 +60,7 @@ public class ProcessBuilderFactory {
     private void setClasspath(ProcessBuilder builder) {
         String classpath = extension.getClasspath();
 
-        log.debug("Setting Custom classpath => %s", classpath);
+        log.debug("Setting Custom classpath => {}", classpath);
         builder.environment().put(CUSTOM_CLASSPATH, classpath);
     }
 
