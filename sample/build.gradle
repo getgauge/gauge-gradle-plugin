@@ -37,15 +37,11 @@ sourceSets {
 }
 
 dependencies {
-    specImplementation (
-            'com.thoughtworks.gauge:gauge-java:+'
-    )
-    testImplementation (
-            'com.thoughtworks.gauge:gauge-java:+',
-            'net.sourceforge.htmlunit:webdriver:2.6',
-            'junit:junit:4.12'
-    )
     implementation 'org.seleniumhq.selenium:selenium-firefox-driver:2.53.0'
+    specImplementation 'com.thoughtworks.gauge:gauge-java:+'
+    testImplementation 'com.thoughtworks.gauge:gauge-java:+'
+    testImplementation 'net.sourceforge.htmlunit:webdriver:2.6'
+    testImplementation 'junit:junit:4.12'
 }
 
 gauge {

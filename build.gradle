@@ -9,7 +9,3 @@ targetCompatibility = 1.8
 repositories {
     mavenCentral()
 }
-
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
-}
