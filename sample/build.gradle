@@ -13,10 +13,8 @@ targetCompatibility = 1.8
 
 buildscript {
     repositories {
-        maven {
-            url "http://dl.bintray.com/manupsunny/maven"
-        }
         mavenCentral()
+        jcenter()
     }
     dependencies {
         // For local development
