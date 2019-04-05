@@ -1,0 +1,11 @@
+os:
+  - linux
+
+language: java
+
+jdk:
+  - oraclejdk8
+  - oraclejdk11
+
+script:
+  - ./gradlew clean build
