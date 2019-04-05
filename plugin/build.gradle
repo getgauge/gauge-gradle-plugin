@@ -3,7 +3,6 @@ plugins {
     id 'groovy'
     id 'maven'
     id "java-gradle-plugin"
-    id 'com.jfrog.bintray' version "1.4"
     id "com.gradle.plugin-publish" version "0.10.1"
 }
 
@@ -19,6 +18,5 @@ repositories {
     jcenter()
 }
 
-apply from: 'bintray.gradle'
 apply from: 'gradlePortal.gradle'
 
