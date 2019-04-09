@@ -21,7 +21,6 @@ package com.thoughtworks.gauge.gradle.util;
 
 import com.thoughtworks.gauge.gradle.GaugeExtension;
 import com.thoughtworks.gauge.gradle.exception.GaugeExecutionFailedException;
-import org.apache.commons.lang3.StringUtils;
 import org.gradle.api.Project;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +36,6 @@ public class ProcessBuilderFactory {
     private static final String ENV_FLAG = "--env";
     private static final String NODE_FLAG = "-n";
     private static final String TAGS_FLAG = "--tags";
-    private static final String SPECS_FLAG = "specs";
     private static final String PARALLEL_FLAG = "--parallel";
     private static final String CUSTOM_CLASSPATH = "gauge_custom_classpath";
     private static final String WORKING_DIRECTORY_FLAG = "--dir";
@@ -62,7 +60,7 @@ public class ProcessBuilderFactory {
     private void setClasspath(ProcessBuilder builder) {
         String classpath = extension.getClasspath();
 
-        log.debug("Setting Custom classpath => %s", classpath);
+        log.debug("Setting Custom classpath => {}", classpath);
         builder.environment().put(CUSTOM_CLASSPATH, classpath);
     }
 
@@ -158,7 +156,7 @@ public class ProcessBuilderFactory {
     private void addGaugeExecutable(ArrayList<String> command) {
         String gauge;
         String gaugeRoot = extension.getGaugeRoot();
-        if (StringUtils.isNotEmpty(gaugeRoot)) {
+        if (gaugeRoot != null && !gaugeRoot.isEmpty()) {
             gauge = Paths.get(gaugeRoot, "bin", GAUGE).toString();
         } else {
             gauge = GAUGE;
