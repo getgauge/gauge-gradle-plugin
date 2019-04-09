@@ -1,5 +1,8 @@
-group 'com.thoughtworks.gauge.gradle'
-version '1.0-SNAPSHOT'
+Properties plugin = new Properties()
+plugin.load(project.file('./plugin.properties').newDataInputStream())
+
+group plugin.getProperty("groupId")
+version plugin.getProperty("version")
 
 apply plugin: 'java'
 
