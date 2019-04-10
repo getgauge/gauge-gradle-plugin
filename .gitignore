@@ -10,3 +10,5 @@ sample/report*
 sample/log*
 sample/.gauge
 local.properties
+plugin/out
+sample/out
