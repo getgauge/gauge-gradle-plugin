@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'groovy'
     id 'maven'
+    id "com.jfrog.bintray" version "1.8.4"
     id "java-gradle-plugin"
     id "com.gradle.plugin-publish" version "0.10.1"
 }
@@ -21,4 +22,4 @@ repositories {
 }
 
 apply from: 'gradlePortal.gradle'
-
+apply from: 'bintray.gradle'

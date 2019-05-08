@@ -1,7 +1,7 @@
 uploadArchives {
     repositories {
         mavenDeployer {
-            repository(url: uri('../../repo'))
+            repository(url: uri('../build/distributions'))
         }
     }
 }
@@ -17,7 +17,7 @@ Properties credentials = new Properties()
 credentials.load(project.file('../local.properties').newDataInputStream())
 
 group plugin.getProperty("groupId")
-version plugin.getProperty("version")
+version plugin.getProperty("version") + "-nightly-" + new Date().format('yyyy-MM-dd')
 
 task sourcesJar(type: Jar) {
     from sourceSets.main.java.srcDirs
@@ -33,22 +33,22 @@ artifacts {
     archives sourcesJar
 }
 
-
 bintray {
     user = credentials.getProperty("bintray.user")
     key = credentials.getProperty("bintray.apikey")
 
     configurations = ['archives']
     pkg {
-        repo = "maven"
-        name = "gauge-gradle-plugin"
+        repo = "gauge-gradle-plugin"
+        name = "Nightly"
+        userOrg = "gauge"
         desc = plugin.getProperty("description")
         websiteUrl = plugin.getProperty("siteUrl")
         vcsUrl = plugin.getProperty("gitUrl")
         licenses = ["GPL-3.0"]
         publish = true
         version {
-            name = plugin.getProperty("version")
+            name = plugin.getProperty("version") + "-nightly-" + new Date().format('yyyy-MM-dd')
             desc = plugin.getProperty("versionDescription")
             released = new Date()
         }
@@ -67,8 +67,7 @@ task writeNewPom {
                 packaging 'jar'
                 groupId plugin.getProperty("groupId")
                 artifactId plugin.getProperty("artifactId")
-                version plugin.getProperty("version")
-
+                version plugin.getProperty("version") + "-nightly-" + new Date().format('yyyy-MM-dd')
                 licenses {
                     license {
                         name 'GNU General Public License, Version 3'
@@ -79,8 +78,8 @@ task writeNewPom {
 
                 scm {
                     url plugin.getProperty("siteUrl")
-                    connection 'scm:git:git://github.com/manupsunny/gauge-gradle-plugin.git'
-                    developerConnection 'scm:git:git@github.com:manupsunny/gauge-gradle-plugin.git'
+                    connection 'scm:git:git://github.com/getgauge/gauge-gradle-plugin.git'
+                    developerConnection 'scm:git:git@github.com:getgauge/gauge-gradle-plugin.git'
                 }
 
                 developers {
