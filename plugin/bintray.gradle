@@ -13,9 +13,6 @@ install.dependsOn build
 Properties plugin = new Properties()
 plugin.load(project.file('../plugin.properties').newDataInputStream())
 
-Properties credentials = new Properties()
-credentials.load(project.file('../bintray.properties').newDataInputStream())
-
 group plugin.getProperty("groupId")
 version plugin.getProperty("version") + "-nightly-" + new Date().format('yyyy-MM-dd')
 
@@ -34,9 +31,8 @@ artifacts {
 }
 
 bintray {
-    user = credentials.getProperty("bintray.user")
-    key = credentials.getProperty("bintray.apikey")
-
+    user = System.getProperty("bintray.user")
+    key = System.getProperty("bintray.apikey")
     configurations = ['archives']
     pkg {
         repo = "gauge-gradle-plugin"
