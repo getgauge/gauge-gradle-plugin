@@ -9,6 +9,13 @@
 
 Use the gauge-gradle-plugin to execute specifications in your [Gauge](http://getgauge.io) java project and manage dependencies using [Gradle](http://gradle.org//).
 
+### Create java project with gradle
+
+```
+gauge init java_gradle
+```
+
+
 ### Using plugin in project
 
 Apply plugin ***gauge*** and add classpath to your ***build.gradle***. Here is a sample gradle file,
@@ -81,6 +88,28 @@ gradle gauge -Penv="dev" -PspecsDir=specs
 ```
 
 Note : Pass specsDir parameter as the last one.
+
+### Install from Nightly
+
+* Add bintray repo url in maven.
+* Update the version to nightly.
+
+Example :-
+
+```
+buildscript {
+    repositories {
+        mavenCentral()
+         maven {
+            url "https://dl.bintray.com/gauge/gauge-gradle-plugin"
+        }
+    }
+    dependencies {
+        classpath 'org.gauge.gradle:gauge-gradle-plugin:1.7.3-nightly-2019-05-08'
+    }
+}
+```
+
 
 ### All additional Properties
 The following plugin properties can be additionally set:
