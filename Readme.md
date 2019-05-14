@@ -4,6 +4,7 @@
 [![License](http://img.shields.io/:license-gpl3-blue.svg)](https://www.gnu.org/licenses/gpl.txt)
 [![Build Status](https://travis-ci.org/getgauge/gauge-gradle-plugin.svg?branch=master)](https://travis-ci.org/getgauge/gauge-gradle-plugin)
 
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v1.4%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 
 # Gauge Gradle Plugin
 
