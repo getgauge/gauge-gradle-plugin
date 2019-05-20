@@ -40,7 +40,7 @@ buildscript {
         }
     }
     dependencies {
-         classpath "gradle.plugin.org.gauge.gradle:gauge-gradle-plugin:1.7.4"
+         classpath "gradle.plugin.org.gauge.gradle:gauge-gradle-plugin:1.8.0"
     }
 }
 repositories {
@@ -70,7 +70,7 @@ Older Versions of the Plugin are also available at [Gradle Plugin Portal](https:
 ````groovy
 plugins {
     id 'java'
-    id 'org.gauge' version "1.7.3"
+    id 'org.gauge' version "1.8.0"
 }
 
 group 'Gradle_example'
@@ -131,7 +131,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'org.gauge.gradle:gauge-gradle-plugin:1.7.3-nightly-2019-05-08'
+        classpath 'org.gauge.gradle:gauge-gradle-plugin:1.8.0-nightly-2019-05-20'
     }
 }
 ```
@@ -149,9 +149,6 @@ The following plugin properties can be additionally set:
 |env      | -Penv=qa  | gauge env to run against  |
 |additionalFlags| -PadditionalFlags="--verbose" | Add additional gauge flags to execution|
 |gaugeRoot| -PgaugeRoot="/opt/gauge" | Path to gauge installation root|
-
-
-See gauge's [command line interface](http://getgauge.io/documentation/user/current/cli/index.html) for list of all flags that be used with **-PadditionalFlags** option.
 
 ### Adding/configuring custom Gauge tasks
 It is possible to define new custom Gauge tasks by extending `GaugePlugin` class. It can be used to create/configure tasks specific for different environments. For example,
