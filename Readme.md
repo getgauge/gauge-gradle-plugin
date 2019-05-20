@@ -19,6 +19,8 @@ gauge init java_gradle
 
 ### Using plugin in project
 
+### Using legacy plugin application:
+
 Apply plugin ***gauge*** and add classpath to your ***build.gradle***. Here is a sample gradle file,
 
 ````groovy
@@ -33,13 +35,14 @@ description = "My Gauge Tests"
 
 buildscript {
     repositories {
-        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
-        classpath 'com.thoughtworks.gauge.gradle:gauge-gradle-plugin:+'
+         classpath "gradle.plugin.org.gauge.gradle:gauge-gradle-plugin:1.7.4"
     }
 }
-
 repositories {
     mavenCentral()
 }
@@ -61,8 +64,30 @@ gauge {
 
 ````
 
-Older Versions of the Plugin are also available at [Gradle Plugin Portal](https://plugins.gradle.org/plugin/com.thoughtworks.gauge). For an uptodate version of the Plugin please use `buildscript` and `mavenCentral()` in your build.gradle as shown in the example above.
+Older Versions of the Plugin are also available at [Gradle Plugin Portal](https://plugins.gradle.org/plugin/org.gauge). For an uptodate version of the Plugin please use `buildscript` and `mavenCentral()` in your build.gradle as shown in the example above.
 
+### Using the plugins DSL:
+````groovy
+plugins {
+    id 'java'
+    id 'org.gauge' version "1.7.3"
+}
+
+group 'Gradle_example'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.thoughtworks.gauge:gauge-java:0.7.1'
+    testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.8.0'
+}
+````
 
 ### Executing specs using gradle
 To execute gauge specs,
@@ -132,6 +157,8 @@ See gauge's [command line interface](http://getgauge.io/documentation/user/curre
 It is possible to define new custom Gauge tasks by extending `GaugePlugin` class. It can be used to create/configure tasks specific for different environments. For example,
 
 ````groovy
+import gradle.plugin.org.gauge.gradle.*
+
 task gaugeDev(type: GaugeTask) {
     doFirst {
         gauge {
@@ -143,6 +170,8 @@ task gaugeDev(type: GaugeTask) {
         }
     }
 }
+
+import gradle.plugin.org.gauge.gradle.*
 
 task gaugeTest(type: GaugeTask) {
     doFirst {
