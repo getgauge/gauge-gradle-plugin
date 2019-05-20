@@ -154,7 +154,6 @@ The following plugin properties can be additionally set:
 It is possible to define new custom Gauge tasks by extending `GaugePlugin` class. It can be used to create/configure tasks specific for different environments. For example,
 
 ````groovy
-import gradle.plugin.org.gauge.gradle.*
 
 task gaugeDev(type: GaugeTask) {
     doFirst {
@@ -167,8 +166,6 @@ task gaugeDev(type: GaugeTask) {
         }
     }
 }
-
-import gradle.plugin.org.gauge.gradle.*
 
 task gaugeTest(type: GaugeTask) {
     doFirst {
