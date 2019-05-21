@@ -13,8 +13,7 @@ install.dependsOn build
 Properties plugin = new Properties()
 plugin.load(project.file('../plugin.properties').newDataInputStream())
 
-group plugin.getProperty("groupId")
-version plugin.getProperty("version") + "-nightly-" + new Date().format('yyyy-MM-dd')
+def ver = plugin.getProperty("version") + "-nightly-" + new Date().format('yyyy-MM-dd')
 
 task sourcesJar(type: Jar) {
     from sourceSets.main.java.srcDirs
@@ -44,7 +43,7 @@ bintray {
         licenses = ["GPL-3.0"]
         publish = true
         version {
-            name = plugin.getProperty("version") + "-nightly-" + new Date().format('yyyy-MM-dd')
+            name = ver
             desc = plugin.getProperty("versionDescription")
             released = new Date()
         }
@@ -63,7 +62,7 @@ task writeNewPom {
                 packaging 'jar'
                 groupId plugin.getProperty("groupId")
                 artifactId plugin.getProperty("artifactId")
-                version plugin.getProperty("version") + "-nightly-" + new Date().format('yyyy-MM-dd')
+                version = ver
                 licenses {
                     license {
                         name 'GNU General Public License, Version 3'
@@ -71,20 +70,11 @@ task writeNewPom {
                         distribution 'repo'
                     }
                 }
-
+                
                 scm {
                     url plugin.getProperty("siteUrl")
                     connection 'scm:git:git://github.com/getgauge/gauge-gradle-plugin.git'
                     developerConnection 'scm:git:git@github.com:getgauge/gauge-gradle-plugin.git'
-                }
-
-                developers {
-                    developer {
-                        email 'manupsunny@gmail.com'
-                        name 'Manu Sunny'
-                        url 'https://github.com/manupsunny'
-                        id 'manupsunny'
-                    }
                 }
             }
         }.writeTo("$buildDir/poms/pom-default.xml")

@@ -1,9 +1,6 @@
 Properties plugin = new Properties()
 plugin.load(project.file('../plugin.properties').newDataInputStream())
 
-group = plugin.getProperty("groupId")
-version = plugin.getProperty("version")
-
 gradlePlugin {
     plugins {
         gaugePlugin {

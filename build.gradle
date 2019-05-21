@@ -2,13 +2,6 @@ plugins {
     id "org.jetbrains.intellij" version "0.4.7"
     id "java"
 }
-
-Properties plugin = new Properties()
-plugin.load(project.file('./plugin.properties').newDataInputStream())
-
-group plugin.getProperty("groupId")
-version plugin.getProperty("version")
-
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 

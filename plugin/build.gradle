@@ -23,3 +23,15 @@ repositories {
 
 apply from: 'gradlePortal.gradle'
 apply from: 'bintray.gradle'
+
+Properties plugin = new Properties()
+plugin.load(project.file('../plugin.properties').newDataInputStream())
+group plugin.getProperty("groupId")
+
+gradle.taskGraph.whenReady { taskGraph ->
+    if (taskGraph.hasTask(":bintrayUpload")) {
+        version = plugin.getProperty("version") + "-nightly-" + new Date().format('yyyy-MM-dd')
+    } else {
+        version = plugin.getProperty("version")
+    }
+}
