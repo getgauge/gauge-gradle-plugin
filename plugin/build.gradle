@@ -21,8 +21,8 @@ repositories {
     jcenter()
 }
 
-apply from: 'gradlePortal.gradle'
 apply from: 'bintray.gradle'
+apply from: 'gradlePortal.gradle'
 
 Properties plugin = new Properties()
 plugin.load(project.file('../plugin.properties').newDataInputStream())

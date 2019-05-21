@@ -58,7 +58,6 @@ task writeNewPom {
                 description plugin.getProperty("description")
                 url plugin.getProperty("siteUrl")
                 inceptionYear '2015'
-
                 packaging 'jar'
                 groupId plugin.getProperty("groupId")
                 artifactId plugin.getProperty("artifactId")
@@ -70,7 +69,7 @@ task writeNewPom {
                         distribution 'repo'
                     }
                 }
-                
+
                 scm {
                     url plugin.getProperty("siteUrl")
                     connection 'scm:git:git://github.com/getgauge/gauge-gradle-plugin.git'
