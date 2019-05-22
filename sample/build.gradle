@@ -1,7 +1,9 @@
 import com.thoughtworks.gauge.gradle.GaugeTask
 
-apply plugin: 'java'
-apply plugin: 'gauge'
+plugins {
+    id 'java'
+    id 'org.gauge' version '1.8.0'
+}
 
 group = "my-gauge-tests"
 version = "1.1.0"
@@ -10,18 +12,6 @@ description = "My Gauge Tests"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-
-buildscript {
-    repositories {
-        mavenCentral()
-        jcenter()
-    }
-    dependencies {
-        // For local development
-        classpath fileTree(include: ['*.jar'], dir: "$projectDir/../plugin/build/libs")
-        classpath 'com.thoughtworks.gauge.gradle:gauge-gradle-plugin:+'
-    }
-}
 
 repositories {
     mavenCentral()
