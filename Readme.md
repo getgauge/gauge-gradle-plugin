@@ -1,35 +1,70 @@
-[![Maven Central](https://img.shields.io/maven-central/v/com.thoughtworks.gauge.gradle/gauge-gradle-plugin.svg)](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22gauge-gradle-plugin%22)
+[![Gradle Plugin Portal](https://img.shields.io/maven-metadata/v/https/plugins.gradle.org/m2/gradle/plugin/org/gauge/gradle/gauge-gradle-plugin/maven-metadata.xml.svg?colorB=007ec6&label=Plugin+Portal)](https://plugins.gradle.org/plugin/org.gauge)
 [![Download Nightly](https://api.bintray.com/packages/gauge/gauge-gradle-plugin/Nightly/images/download.svg) ](https://bintray.com/gauge/gauge-gradle-plugin/)
-[![Codacy Badge](https://api.codacy.com/project/badge/grade/d4d3e7d6c4ce4fa3a79f2790167fd511)](https://www.codacy.com/app/manupsunny/gauge-gradle-plugin)
-[![License](http://img.shields.io/:license-gpl3-blue.svg)](https://www.gnu.org/licenses/gpl.txt)
 [![Build Status](https://travis-ci.org/getgauge/gauge-gradle-plugin.svg?branch=master)](https://travis-ci.org/getgauge/gauge-gradle-plugin)
-
+[![License](http://img.shields.io/:license-gpl3-ff69b4.svg)](https://www.gnu.org/licenses/gpl.txt)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v1.4%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 
 # Gauge Gradle Plugin
 
-Use the gauge-gradle-plugin to execute specifications in your [Gauge](http://getgauge.io) java project and manage dependencies using [Gradle](http://gradle.org//).
+Use the gauge-gradle-plugin to execute specifications in your [Gauge](http://getgauge.io) Java project and manage dependencies using [Gradle](http://gradle.org//).
 
-### Create java project with gradle
+## Installation
+
+### On a new project
+
+You can use this plugin on a new project via a Gauge [project template](https://docs.gauge.org/latest/installation.html#project-templates):
 
 ```
 gauge init java_gradle
 ```
 
+### Using the plugins DSL
 
-### Using plugin in project
+If you have an existing project and you would like to add the plugin manually you can add it like the below
 
-### Using legacy plugin application:
 
-Apply plugin ***gauge*** and add classpath to your ***build.gradle***. Here is a sample gradle file,
+````groovy
+plugins {
+    id 'java'
+    id 'org.gauge' version '1.8.0'
+}
+
+group = 'my-gauge-tests'
+version = '1.0-SNAPSHOT'
+
+description = "My Gauge Tests"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.thoughtworks.gauge:gauge-java:+'
+}
+
+// configure gauge task here (optional)
+gauge {
+    specsDir = 'specs'
+    inParallel = true
+    nodes = 2
+    env = 'dev'
+    tags = 'tag1'
+    additionalFlags = '--verbose'
+    gaugeRoot = '/opt/gauge'
+}
+````
+
+### Using legacy plugin 'apply' style
+
+* apply plugin `gauge` 
+* update the `buildscript` to add the Gradle plugins repo and classpath
 
 ````groovy
 apply plugin: 'java'
 apply plugin: 'gauge'
-apply plugin: 'application'
 
 group = "my-gauge-tests"
-version = "1.1.0"
+version = "1.0-SNAPSHOT"
 
 description = "My Gauge Tests"
 
@@ -43,12 +78,13 @@ buildscript {
          classpath "gradle.plugin.org.gauge.gradle:gauge-gradle-plugin:1.8.0"
     }
 }
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    'com.thoughtworks.gauge:gauge-java:+',
+    implementation 'com.thoughtworks.gauge:gauge-java:+'
 }
 
 // configure gauge task here (optional)
@@ -64,38 +100,13 @@ gauge {
 
 ````
 
-Older Versions of the Plugin are also available at [Gradle Plugin Portal](https://plugins.gradle.org/plugin/org.gauge). For an uptodate version of the Plugin please use `buildscript` and `mavenCentral()` in your build.gradle as shown in the example above.
 
-### Using the plugins DSL:
-````groovy
-plugins {
-    id 'java'
-    id 'org.gauge' version "1.8.0"
-}
+## Usage
 
-group 'Gradle_example'
-version '1.0-SNAPSHOT'
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    implementation 'com.thoughtworks.gauge:gauge-java:0.7.1'
-    testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.8.0'
-}
-````
-
-### Executing specs using gradle
-To execute gauge specs,
-
+### Running
 ````
 gradle gauge
 ````
-
 #### Execute list of specs
 ```
 gradle gauge -PspecsDir="specs/first.spec specs/second.spec"
@@ -115,28 +126,6 @@ gradle gauge -Penv="dev" -PspecsDir=specs
 
 Note : Pass specsDir parameter as the last one.
 
-### Install from Nightly
-
-* Add bintray repo url in maven.
-* Update the version to nightly.
-
-Example :-
-
-```
-buildscript {
-    repositories {
-        mavenCentral()
-         maven {
-            url "https://dl.bintray.com/gauge/gauge-gradle-plugin"
-        }
-    }
-    dependencies {
-        classpath 'org.gauge.gradle:gauge-gradle-plugin:1.8.0-nightly-2019-05-20'
-    }
-}
-```
-
-
 ### All additional Properties
 The following plugin properties can be additionally set:
 
@@ -151,7 +140,7 @@ The following plugin properties can be additionally set:
 |gaugeRoot| -PgaugeRoot="/opt/gauge" | Path to gauge installation root|
 
 ### Adding/configuring custom Gauge tasks
-It is possible to define new custom Gauge tasks by extending `GaugePlugin` class. It can be used to create/configure tasks specific for different environments. For example,
+It is possible to define new custom Gauge tasks specific for different environments. For example,
 
 ````groovy
 
@@ -179,6 +168,29 @@ task gaugeTest(type: GaugeTask) {
     }
 }
 ````
+
+## Advanced
+
+### Install from Nightly
+
+* Add a new repository point to the bintray repo
+* Update the version to nightly
+
+Example :-
+
+```
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://dl.bintray.com/gauge/gauge-gradle-plugin"
+        }
+    }
+    dependencies {
+        classpath 'org.gauge.gradle:gauge-gradle-plugin:1.8.0-nightly-2019-05-20'
+    }
+}
+```
 
 ### License
 
