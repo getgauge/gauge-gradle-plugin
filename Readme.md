@@ -1,5 +1,4 @@
 [![Gradle Plugin Portal](https://img.shields.io/maven-metadata/v/https/plugins.gradle.org/m2/gradle/plugin/org/gauge/gradle/gauge-gradle-plugin/maven-metadata.xml.svg?colorB=007ec6&label=Plugin+Portal)](https://plugins.gradle.org/plugin/org.gauge)
-[![Download Nightly](https://api.bintray.com/packages/gauge/gauge-gradle-plugin/Nightly/images/download.svg) ](https://bintray.com/gauge/gauge-gradle-plugin/)
 [![Build Status](https://travis-ci.org/getgauge/gauge-gradle-plugin.svg?branch=master)](https://travis-ci.org/getgauge/gauge-gradle-plugin)
 [![License](http://img.shields.io/:license-gpl3-ff69b4.svg)](https://www.gnu.org/licenses/gpl.txt)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v1.4%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
@@ -173,29 +172,6 @@ task gaugeTest(type: GaugeTask) {
     }
 }
 ````
-
-## Advanced
-
-### Install from Nightly
-
-* Add a new repository point to the bintray repo
-* Update the version to nightly
-
-Example :-
-
-```
-buildscript {
-    repositories {
-        mavenCentral()
-        maven {
-            url "https://dl.bintray.com/gauge/gauge-gradle-plugin"
-        }
-    }
-    dependencies {
-        classpath 'org.gauge.gradle:gauge-gradle-plugin:1.8.0-nightly-2019-05-20'
-    }
-}
-```
 
 ### License
 
