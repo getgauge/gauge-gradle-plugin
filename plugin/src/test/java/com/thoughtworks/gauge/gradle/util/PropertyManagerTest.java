@@ -56,7 +56,7 @@ public class PropertyManagerTest {
 
         manager.setProperties();
 
-        assertThat(extension.getClasspath(), containsString("blah.jar:blah2.jar"));
+        assertThat(extension.getClasspath(), containsString(String.join(File.pathSeparator, "blah.jar", "blah2.jar")));
     }
 
     private void mockTestRuntimeClasspathConfiguration(String... files) {
