@@ -104,7 +104,6 @@ gauge {
 
 ````
 
-
 ## Usage
 
 ### Running
@@ -171,6 +170,17 @@ task gaugeTest(type: GaugeTask) {
         }
     }
 }
+````
+
+### Running gauge task with source code of gradle plugin
+run the gauge command with -
+````
+gradle gauge --include-build {PATH_TO_GRADLE_PLUGIN}
+````
+
+or add this property in `settings.gradle`
+````
+includeBuild {PATH_TO_GRADLE_PLUGIN}
 ````
 
 ### License

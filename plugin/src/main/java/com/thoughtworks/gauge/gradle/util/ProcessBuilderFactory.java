@@ -20,12 +20,10 @@
 package com.thoughtworks.gauge.gradle.util;
 
 import com.thoughtworks.gauge.gradle.GaugeExtension;
-import com.thoughtworks.gauge.gradle.exception.GaugeExecutionFailedException;
 import org.gradle.api.Project;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -114,25 +112,12 @@ public class ProcessBuilderFactory {
 
     private void validateSpecsDirectory(String specsDirectoryPath, ArrayList<String> command) {
         if (specsDirectoryPath.contains(" ")) {
-            for (String file : specsDirectoryPath.split(" ")) {
-                validateSingleSpecsDirectory(file, command);
-            }
+            command.addAll(Arrays.asList(specsDirectoryPath.split(" ")));
         } else if (specsDirectoryPath.contains(",")) {
-            for (String file : specsDirectoryPath.split(",")) {
-                validateSingleSpecsDirectory(file, command);
-            }
+            command.addAll(Arrays.asList(specsDirectoryPath.split(",")));
         } else {
-            validateSingleSpecsDirectory(specsDirectoryPath, command);
+            command.add(specsDirectoryPath);
         }
-    }
-
-    private void validateSingleSpecsDirectory(String specsDirectoryPath, ArrayList<String> command) {
-        File specsDirectory = new File(getCurrentProjectPath() + File.separator + specsDirectoryPath);
-        if (!specsDirectory.exists()) {
-            log.error("Specs directory specified is not existing!");
-            throw new GaugeExecutionFailedException("Specs directory specified is not existing!");
-        }
-        command.add(specsDirectoryPath);
     }
 
     private String getCurrentProjectPath() {
