@@ -50,7 +50,10 @@ public class GaugeTask extends Test {
             Process process = builder.start();
             executeGaugeSpecs(process);
         } catch (IOException e) {
-            throw new GaugeExecutionFailedException("Gauge or Java runner is not installed! Read http://getgauge.io/documentation/user/current/getting_started/download_and_install.html");
+            if(e.getMessage().contains("Cannot run program \"gauge\": error=2, No such file or directory")){
+                throw new GaugeExecutionFailedException("Gauge or Java runner is not installed! Refer https://docs.gauge.org/getting_started/installing-gauge.html");
+            }
+            log.error(e.getMessage() + e.getStackTrace());
         }
     }
 
