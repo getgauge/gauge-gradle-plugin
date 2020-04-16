@@ -32,10 +32,13 @@ public class GaugePluginTest {
     public void taskShouldBeAddedOnApply() {
         project.getPluginManager().apply(GAUGE);
         TaskContainer tasks = project.getTasks();
-        assertEquals(1, tasks.size());
+        assertEquals(2, tasks.size());
 
         SortedMap<String, Task> tasksMap = tasks.getAsMap();
         Task gauge = tasksMap.get(GAUGE);
+        Task classpath = tasksMap.get("classpath");
+
         assertTrue(gauge instanceof GaugeTask);
+        assertTrue(classpath instanceof ClasspathTask);
     }
 }
