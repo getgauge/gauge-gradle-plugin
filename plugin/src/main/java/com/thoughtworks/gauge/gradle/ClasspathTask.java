@@ -19,18 +19,21 @@
 
 package com.thoughtworks.gauge.gradle;
 
-import org.gradle.api.Plugin;
+import com.thoughtworks.gauge.gradle.util.PropertyManager;
+
 import org.gradle.api.Project;
+import org.gradle.api.tasks.TaskAction;
+import org.gradle.api.tasks.testing.Test;
 
-public class GaugePlugin implements Plugin<Project> {
+@SuppressWarnings("WeakerAccess")
+public class ClasspathTask extends Test {
 
-    private static final String GAUGE = "gauge";
-    private static final String CLASSPATH = "classpath";
-
-    @Override
-    public void apply(Project project) {
-        project.getExtensions().create(GAUGE, GaugeExtension.class);
-        project.getTasks().create(GAUGE, GaugeTask.class);
-        project.getTasks().create(CLASSPATH, ClasspathTask.class);
+    @TaskAction
+    public void classpath() {
+        Project project = getProject();
+        GaugeExtension extension = project.getExtensions().findByType(GaugeExtension.class);
+        PropertyManager propertyManager = new PropertyManager(project, extension);
+        propertyManager.setProperties();
+        System.out.println(extension.getClasspath());
     }
 }
