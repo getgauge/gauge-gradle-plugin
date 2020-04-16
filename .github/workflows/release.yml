@@ -1,9 +1,10 @@
-name: release
+name: Release on PR Merge
 
-on: [deployment]
+on: deployment
 
 jobs:
-  release:
+  deploy:
+    if: github.event.deployment.environment == 'production'
     name: Deploy to gradle portal
     runs-on: ubuntu-latest
     env:
