@@ -15,3 +15,8 @@ sample/out
 bin/
 **/build/
 .java-version
+.classpath
+.project
+.settings/org.eclipse.buildship.core.prefs
+plugin/.settings/org.eclipse.buildship.core.prefs
+sample/.settings/org.eclipse.buildship.core.prefs
