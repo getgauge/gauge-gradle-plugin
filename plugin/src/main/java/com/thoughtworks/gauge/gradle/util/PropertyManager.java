@@ -21,10 +21,8 @@ package com.thoughtworks.gauge.gradle.util;
 
 import com.thoughtworks.gauge.gradle.GaugeExtension;
 import org.gradle.api.Project;
-import org.gradle.api.plugins.JavaPlugin;
-
+import org.gradle.api.tasks.SourceSetContainer;
 import java.io.File;
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -37,7 +35,6 @@ public class PropertyManager {
     private static final String IN_PARALLEL = "inParallel";
     private static final String ADDITIONAL_FLAGS = "additionalFlags";
     private static final String GAUGE_ROOT = "gaugeRoot";
-    private static final String CLASSES = "/classes";
     private static final String FAILED = "--failed";
     private static final String REPEAT = "--repeat";
 
@@ -108,12 +105,9 @@ public class PropertyManager {
     }
 
     private void setClasspath() {
-        Set<String> classpaths = new LinkedHashSet<>();
-
-        addBuildClasspaths(classpaths);
-        addRuntimeClasspaths(classpaths);
-
-        extension.setClasspath(String.join(File.pathSeparator, classpaths));
+        String runtimeClasspath = ((SourceSetContainer) properties.get("sourceSets")).getByName("test").getRuntimeClasspath().getAsPath();
+        String compileClasspath = ((SourceSetContainer) properties.get("sourceSets")).getByName("test").getCompileClasspath().getAsPath();
+        extension.setClasspath(String.join(File.pathSeparator, runtimeClasspath, compileClasspath));
     }
 
     private void setGaugeRoot() {
@@ -121,18 +115,6 @@ public class PropertyManager {
         if (gaugeRoot != null) {
             extension.setGaugeRoot(gaugeRoot);
         }
-    }
-
-    private void addRuntimeClasspaths(Set<String> classPaths) {
-        project.getConfigurations()
-                .getByName(JavaPlugin.TEST_RUNTIME_CLASSPATH_CONFIGURATION_NAME)
-                .getAsFileTree()
-                .getFiles()
-                .forEach(file -> classPaths.add(file.getPath()));
-    }
-
-    private void addBuildClasspaths(Set<String> classPaths) {
-        findFiles(project.getBuildDir().getAbsolutePath() + CLASSES, classPaths);
     }
 
     private void findFiles(String dir, Set<String> classPaths) {
