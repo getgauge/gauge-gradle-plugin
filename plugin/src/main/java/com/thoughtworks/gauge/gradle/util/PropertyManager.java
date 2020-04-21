@@ -106,8 +106,7 @@ public class PropertyManager {
 
     private void setClasspath() {
         String runtimeClasspath = ((SourceSetContainer) properties.get("sourceSets")).getByName("test").getRuntimeClasspath().getAsPath();
-        String compileClasspath = ((SourceSetContainer) properties.get("sourceSets")).getByName("test").getCompileClasspath().getAsPath();
-        extension.setClasspath(String.join(File.pathSeparator, runtimeClasspath, compileClasspath));
+        extension.setClasspath(runtimeClasspath);
     }
 
     private void setGaugeRoot() {
