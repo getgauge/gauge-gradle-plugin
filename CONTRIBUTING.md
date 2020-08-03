@@ -14,7 +14,7 @@ So, depending on where you see your contribution fit, please focus on the respec
 
 ## Contribution process
 
-Please read about the Contribution Process [here](https://github.com/getgauge/gauge/blob/master/CONTRIBUTING.md), if you are happy please sign the [Contributor's License Agreement](https://gauge-bot.herokuapp.com/cla/).
+Please read about the Contribution Process [here](https://github.com/getgauge/gauge/blob/master/CONTRIBUTING.md).
 
 ## How can I contribute
 
@@ -25,4 +25,4 @@ Contributions can be of many forms:
 - Enhance the documentation
 - Participate in design discussions on Google Groups
 
-If you need help in getting started with contribution, feel free to reach out on the [Google Groups](https://groups.google.com/forum/#!forum/getgauge) or [Gitter](https://gitter.im/getgauge/chat).
+If you need help in getting started with contribution, feel free to reach out on the [Google Groups](https://groups.google.com/forum/#!forum/getgauge) or [Gitter](https://spectrum.chat/gauge).

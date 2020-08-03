@@ -1,6 +1,5 @@
 [![Gradle Plugin Portal](https://img.shields.io/maven-metadata/v/https/plugins.gradle.org/m2/gradle/plugin/org/gauge/gradle/gauge-gradle-plugin/maven-metadata.xml.svg?colorB=007ec6&label=Plugin+Portal)](https://plugins.gradle.org/plugin/org.gauge)
 [![Build Status](https://travis-ci.org/getgauge/gauge-gradle-plugin.svg?branch=master)](https://travis-ci.org/getgauge/gauge-gradle-plugin)
-[![License](http://img.shields.io/:license-gpl3-ff69b4.svg)](https://www.gnu.org/licenses/gpl.txt)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v1.4%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 
 # Gauge Gradle Plugin
@@ -183,8 +182,6 @@ or add this property in `settings.gradle`
 includeBuild {PATH_TO_GRADLE_PLUGIN}
 ````
 
-### License
+## License
 
-![GNU Public License version 3.0](http://www.gnu.org/graphics/gplv3-127x51.png)
-
-Gauge Gradle Plugin is released under [GNU Public License Version 3.0](http://www.gnu.org/licenses/gpl-3.0.txt)
+Gauge is released under the Apache License, Version 2.0. See [LICENSE](LICENSE) for the full license text.
