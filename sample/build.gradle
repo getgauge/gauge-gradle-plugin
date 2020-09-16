@@ -27,7 +27,7 @@ sourceSets {
 }
 
 dependencies {
-    implementation 'org.seleniumhq.selenium:selenium-firefox-driver:2.53.0'
+    implementation 'org.seleniumhq.selenium:selenium-firefox-driver:3.141.59'
     specImplementation 'com.thoughtworks.gauge:gauge-java:+'
     testImplementation 'com.thoughtworks.gauge:gauge-java:+'
     testImplementation 'net.sourceforge.htmlunit:webdriver:2.6'
