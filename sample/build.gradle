@@ -31,7 +31,7 @@ dependencies {
     specImplementation 'com.thoughtworks.gauge:gauge-java:+'
     testImplementation 'com.thoughtworks.gauge:gauge-java:+'
     testImplementation 'net.sourceforge.htmlunit:webdriver:2.6'
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
 }
 
 gauge {
