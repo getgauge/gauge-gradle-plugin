@@ -42,9 +42,7 @@ public class PropertyManagerTest {
     @Test
     public void classpathShouldBeEmptyIfNoTesRuntimeDependencies() {
         SourceSet config = mock(SourceSet.class, RETURNS_DEEP_STUBS);
-        when(config.getName()).thenReturn("");
-        when(config.getRuntimeClasspath().getAsPath())
-                .thenReturn("");
+        when(config.getRuntimeClasspath().getAsPath()).thenReturn("");
         when(sourceSetContainer.getByName("test")).thenReturn(config);
          PropertyManager manager = new PropertyManager(project, extension);
 
@@ -56,7 +54,6 @@ public class PropertyManagerTest {
     @Test
     public void classpathShouldIncludeTestRuntimeClasspathConfigurations() {
         SourceSet config = mock(SourceSet.class, RETURNS_DEEP_STUBS);
-        when(config.getName()).thenReturn("");
         when(config.getRuntimeClasspath().getAsPath())
                 .thenReturn(String.join(File.pathSeparator, "blah.jar", "blah2.jar"));
         when(sourceSetContainer.getByName("test")).thenReturn(config);

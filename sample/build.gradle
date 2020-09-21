@@ -2,7 +2,7 @@ import com.thoughtworks.gauge.gradle.GaugeTask
 
 plugins {
     id 'java'
-    id 'org.gauge' version '1.8.0'
+    id 'org.gauge' version '1.8.1'
 }
 
 group = "my-gauge-tests"
@@ -27,11 +27,11 @@ sourceSets {
 }
 
 dependencies {
-    implementation 'org.seleniumhq.selenium:selenium-firefox-driver:2.53.0'
+    implementation 'org.seleniumhq.selenium:selenium-firefox-driver:3.141.59'
     specImplementation 'com.thoughtworks.gauge:gauge-java:+'
     testImplementation 'com.thoughtworks.gauge:gauge-java:+'
     testImplementation 'net.sourceforge.htmlunit:webdriver:2.6'
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
 }
 
 gauge {

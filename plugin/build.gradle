@@ -3,7 +3,7 @@ plugins {
     id 'groovy'
     id 'maven'
     id "java-gradle-plugin"
-    id "com.gradle.plugin-publish" version "0.11.0"
+    id "com.gradle.plugin-publish" version "0.12.0"
 }
 
 sourceCompatibility = 1.8
@@ -11,8 +11,8 @@ targetCompatibility = 1.8
 
 dependencies {
     implementation gradleApi()
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:1.10.19'
+    testImplementation 'junit:junit:4.13'
+    testImplementation 'org.mockito:mockito-core:3.5.11'
 }
 
 repositories {
