@@ -65,6 +65,7 @@ public class GaugeTaskTest {
         gauge.setAdditionalFlags(VERBOSE_FLAG);
         gauge.setSpecsDir(SPECS_FOLDER);
         gauge.setGaugeRoot(GAUGE_ROOT);
+        gauge.environment("key", "value");
         task.executeGaugeSpecs(process);
     }
 

@@ -17,6 +17,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("WeakerAccess")
 public class GaugeTask extends Test {
@@ -31,6 +34,13 @@ public class GaugeTask extends Test {
 
         ProcessBuilderFactory processBuilderFactory = new ProcessBuilderFactory(extension, project);
         ProcessBuilder builder = processBuilderFactory.create();
+        if (null != extension) {
+            builder.environment().putAll(
+                    extension.getEnvironmentVariables().entrySet().stream()
+                            .filter(variable -> !builder.environment().containsKey(variable.getKey()))
+                            .filter(variable -> Objects.nonNull(variable.getValue()))
+                            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
+        }
         log.info("Executing command => " + builder.command());
 
         try {

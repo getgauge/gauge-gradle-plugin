@@ -10,7 +10,9 @@ import org.junit.Test;
 
 import java.util.SortedMap;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class GaugePluginTest {
     private static final String GAUGE = "gauge";
@@ -37,7 +39,7 @@ public class GaugePluginTest {
         SortedMap<String, Task> tasksMap = tasks.getAsMap();
         Task gauge = tasksMap.get(GAUGE);
         Task classpath = tasksMap.get("classpath");
-
+        assertEquals("verification", gauge.getGroup());
         assertTrue(gauge instanceof GaugeTask);
         assertTrue(classpath instanceof ClasspathTask);
     }

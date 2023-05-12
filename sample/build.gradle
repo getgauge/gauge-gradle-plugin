@@ -2,7 +2,7 @@ import com.thoughtworks.gauge.gradle.GaugeTask
 
 plugins {
     id 'java'
-    id 'org.gauge' version '1.8.1'
+    id 'org.gauge' version '1.8.2'
 }
 
 group = "my-gauge-tests"
