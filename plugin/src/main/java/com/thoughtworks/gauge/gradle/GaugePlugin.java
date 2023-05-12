@@ -17,7 +17,10 @@ public class GaugePlugin implements Plugin<Project> {
     @Override
     public void apply(Project project) {
         project.getExtensions().create(GAUGE, GaugeExtension.class);
-        project.getTasks().create(GAUGE, GaugeTask.class);
+        project.getTasks().create(GAUGE, GaugeTask.class, task -> {
+            task.setGroup("verification");
+            task.setDescription("Runs the Gauge test suite.");
+        });
         project.getTasks().create(CLASSPATH, ClasspathTask.class);
     }
 }

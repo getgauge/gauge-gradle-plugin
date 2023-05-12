@@ -99,8 +99,10 @@ gauge {
     tags = 'tag1'
     additionalFlags = '--verbose'
     gaugeRoot = '/opt/gauge'
+    // additional environment variables to pass onto the gauge process
+    environment("gauge_reports_dir", "custom/reports/")
+    environment("logs_directory", "custom/logs/")
 }
-
 ````
 
 ## Usage
@@ -131,15 +133,15 @@ Note : Pass specsDir parameter as the last one.
 ### All additional Properties
 The following plugin properties can be additionally set:
 
-|Property name|Usage|Description|
-|-------------|-----|-----------|
-|specsDir| -PspecsDir=specs| Gauge specs directory path. Required for executing specs|
-|tags    | -Ptags="tag1 & tag2" |Filter specs by specified tags expression|
-|inParallel| -PinParallel=true | Execute specs in parallel|
-|nodes    | -Pnodes=3 | Number of parallel execution streams. Use with ```parallel```|
-|env      | -Penv=qa  | gauge env to run against  |
-|additionalFlags| -PadditionalFlags="--verbose" | Add additional gauge flags to execution|
-|gaugeRoot| -PgaugeRoot="/opt/gauge" | Path to gauge installation root|
+| Property name   | Usage                         | Description                                                   |
+|-----------------|-------------------------------|---------------------------------------------------------------|
+| specsDir        | -PspecsDir=specs              | Gauge specs directory path. Required for executing specs      |
+| tags            | -Ptags="tag1 & tag2"          | Filter specs by specified tags expression                     |
+| inParallel      | -PinParallel=true             | Execute specs in parallel                                     |
+| nodes           | -Pnodes=3                     | Number of parallel execution streams. Use with ```parallel``` |
+| env             | -Penv=qa                      | gauge env to run against                                      |
+| additionalFlags | -PadditionalFlags="--verbose" | Add additional gauge flags to execution                       |
+| gaugeRoot       | -PgaugeRoot="/opt/gauge"      | Path to gauge installation root                               |
 
 ### Adding/configuring custom Gauge tasks
 It is possible to define new custom Gauge tasks specific for different environments. For example,
@@ -184,4 +186,4 @@ includeBuild {PATH_TO_GRADLE_PLUGIN}
 
 ## License
 
-Gauge is released under the Apache License, Version 2.0. See [LICENSE](LICENSE) for the full license text.
+Gauge is released under the Apache License, Version 2.0. See [LICENSE](LICENSE.txt) for the full license text.

@@ -6,6 +6,9 @@
 
 package com.thoughtworks.gauge.gradle;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class GaugeExtension {
 
     private String specsDir;
@@ -16,6 +19,7 @@ public class GaugeExtension {
     private String classpath;
     private String additionalFlags;
     private String gaugeRoot;
+    private Map<String, String> environmentVariables = new HashMap<>();
 
     public String getSpecsDir() {
         return specsDir;
@@ -79,5 +83,13 @@ public class GaugeExtension {
 
     public void setGaugeRoot(String gaugeRoot) {
         this.gaugeRoot = gaugeRoot;
+    }
+
+    Map<String, String> getEnvironmentVariables() {
+        return environmentVariables;
+    }
+
+    public void environment(String key, String value) {
+        this.environmentVariables.put(key, value);
     }
 }
