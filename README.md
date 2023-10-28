@@ -23,7 +23,7 @@ gauge init java_gradle
 
 ### Using the plugins DSL
 
-If you have an existing project and you would like to add the plugin manually you can add it like the below
+If you have an existing project, and you would like to add the plugin manually you can add it like the below
 
 
 ```groovy
@@ -90,8 +90,7 @@ gauge {
     additionalFlags = '--simple-console --verbose'
     gaugeRoot = '/opt/gauge'
     // additional environment variables to pass onto the gauge process
-    environment("gauge_reports_dir", "custom/reports/")
-    environment("logs_directory", "custom/logs/")
+    environmentVariables = ["gauge_reports_dir": "custom/reports/", "logs_directory": "custom/logs/"]
 }
 ```
 
