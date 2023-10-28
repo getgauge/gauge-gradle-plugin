@@ -1,26 +1,38 @@
 name: Build
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   build:
-
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-
     steps:
-    - uses: actions/checkout@v1
-    - name: Set up JDK
-      uses: actions/setup-java@v1
+    - uses: actions/checkout@v4
+    - uses: actions/setup-java@v3
       with:
-        java-version: '12.x.x'
-
+        distribution: 'temurin'
+        java-version: '11'
+    - uses: getgauge/setup-gauge@master
+      with:
+        gauge-plugins: java, html-report, xml-report
+    - uses: gradle/gradle-build-action@v2
+      with:
+        gradle-version: '8.2'
     - name: Build with Gradle on ubuntu
       if: matrix.os != 'windows-latest'
-      run: ./gradlew clean build
-
+      run: |
+        ./gradlew plugin:build
+        ./gradlew gaugeValidate gaugeDevRepeat
     - name: Build with Gradle on windows
       if: matrix.os == 'windows-latest'
-      run: ./gradlew.bat clean build
+      run: |
+        .\gradlew.bat plugin:build
+        .\gradlew.bat gaugeDevRepeat

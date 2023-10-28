@@ -1,28 +1,82 @@
 plugins {
-    id 'java'
-    id 'groovy'
-    id 'maven'
-    id "java-gradle-plugin"
-    id "com.gradle.plugin-publish" version "0.12.0"
-}
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-dependencies {
-    implementation gradleApi()
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.mockito:mockito-core:3.7.7'
+    id 'java-gradle-plugin'
+    id 'jvm-test-suite'
+    id 'com.gradle.plugin-publish' version '1.2.1'
+    id 'pmd'
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
-    jcenter()
 }
 
-apply from: 'gradlePortal.gradle'
+group = 'org.gauge.gradle'
 
-Properties plugin = new Properties()
-plugin.load(project.file('../plugin.properties').newDataInputStream())
-group plugin.getProperty("groupId")
-version = plugin.getProperty("version")
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+pmd {
+    consoleOutput = true
+}
+
+testing {
+    suites {
+        configureEach {
+            useJUnitJupiter()
+            dependencies {
+                implementation "org.junit.jupiter:junit-jupiter:5.+"
+                runtimeOnly "org.junit.platform:junit-platform-launcher"
+            }
+        }
+        test {
+            dependencies {
+                implementation platform('org.mockito:mockito-bom:5.6.0')
+                implementation('org.mockito:mockito-junit-jupiter')
+            }
+        }
+        integrationTest(JvmTestSuite) {
+            dependencies {
+                implementation project()
+                implementation 'commons-io:commons-io:2.15.+'
+                implementation 'org.hamcrest:hamcrest:2.2'
+            }
+            targets {
+                all {
+                    testTask.configure {
+                        shouldRunAfter(test)
+                    }
+                }
+            }
+        }
+    }
+}
+
+tasks.withType(Test).configureEach {
+    testLogging {
+        showStandardStreams = true
+        showStackTraces = true
+        exceptionFormat = 'full'
+        events = ["passed", "failed", "skipped"]
+    }
+}
+
+tasks.named('check') {
+    dependsOn(testing.suites.named("integrationTest"))
+}
+
+gradlePlugin {
+    testSourceSets(sourceSets.integrationTest)
+    plugins {
+        vcsUrl = "https://github.com/getgauge/gauge-gradle-plugin.git"
+        website = "https://github.com/getgauge/gauge-gradle-plugin"
+        gauge {
+            id = "org.gauge"
+            implementationClass = "org.gauge.gradle.GaugePlugin"
+            displayName = "Gauge"
+            description = "Gradle plugin for Gauge, the open source test automation tool developed by ThoughtWorks."
+            tags.addAll('gauge', 'thoughtworks', 'testing')
+        }
+    }
+}

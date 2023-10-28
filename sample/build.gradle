@@ -1,48 +1,57 @@
-import com.thoughtworks.gauge.gradle.GaugeTask
+import org.gauge.gradle.GaugeTask
 
 plugins {
     id 'java'
-    id 'org.gauge' version '1.8.2'
+    id 'jvm-test-suite'
+    id 'org.gauge'
+    id 'pmd'
 }
 
-group = "my-gauge-tests"
-version = "1.1.0"
-
-description = "My Gauge Tests"
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
 repositories {
+    mavenLocal()
     mavenCentral()
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+pmd {
+    consoleOutput = true
 }
 
 sourceSets {
     spec {
-        java.srcDir 'src/spec/java'
+        java.srcDirs('src/spec/')
     }
     test {
         compileClasspath += sourceSets.spec.runtimeClasspath
+        runtimeClasspath += sourceSets.spec.runtimeClasspath
     }
 }
 
 dependencies {
-    implementation 'org.seleniumhq.selenium:selenium-firefox-driver:3.141.59'
-    specImplementation 'com.thoughtworks.gauge:gauge-java:+'
     testImplementation 'com.thoughtworks.gauge:gauge-java:+'
-    testImplementation 'net.sourceforge.htmlunit:webdriver:2.6'
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation("org.junit.jupiter:junit-jupiter:5.+")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
+
+tasks.register('cleanBuildDir', Delete) {
+    delete "${projectDir}/logs"
+    delete "${projectDir}/out"
+    delete "${projectDir}/reports"
+}
+tasks.clean.dependsOn("cleanBuildDir")
 
 gauge {
     specsDir = 'specs'
     inParallel = true
     nodes = 4
-    env = 'ci'
     additionalFlags = '--verbose'
 }
 
-task gaugeDev(type: GaugeTask) {
+tasks.register('gaugeDev', GaugeTask) {
     doFirst {
         gauge {
             specsDir = 'specs'
@@ -54,26 +63,23 @@ task gaugeDev(type: GaugeTask) {
     }
 }
 
-task gaugeTest(type: GaugeTask) {
+tasks.register('gaugeDevRepeat', GaugeTask) {
+    dependsOn("gaugeDev")
     doFirst {
         gauge {
-            specsDir = 'specs'
-            inParallel = true
-            nodes = 4
-            env = 'test'
-            additionalFlags = '--verbose'
+            additionalFlags = '--repeat --simple-console'
         }
     }
 }
 
-task gaugeCi(type: GaugeTask) {
-    doFirst {
-        gauge {
-            specsDir = 'specs'
-            inParallel = true
-            nodes = 3
-            env = 'ci'
-            additionalFlags = '--verbose'
-        }
-    }
+tasks.withType(Test).configureEach {
+    // https://docs.gradle.org/8.2/userguide/upgrading_version_8.html#test_framework_implementation_dependencies
+    // Using JUnitPlatform for running tests
+    useJUnitPlatform()
+}
+
+tasks.withType(GaugeTask).configureEach {
+    // https://docs.gradle.org/8.2/userguide/upgrading_version_8.html#test_task_default_classpath
+    testClassesDirs = sourceSets.test.output + sourceSets.spec.output
+    classpath = sourceSets.test.runtimeClasspath + sourceSets.spec.runtimeClasspath
 }
