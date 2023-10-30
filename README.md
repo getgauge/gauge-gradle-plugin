@@ -1,5 +1,5 @@
 [![Gradle Plugin Portal](https://img.shields.io/maven-metadata/v/https/plugins.gradle.org/m2/gradle/plugin/org/gauge/gradle/gauge-gradle-plugin/maven-metadata.xml.svg?colorB=007ec6&label=Plugin+Portal)](https://plugins.gradle.org/plugin/org.gauge)
-[![Build Status](https://travis-ci.org/getgauge/gauge-gradle-plugin.svg?branch=master)](https://travis-ci.org/getgauge/gauge-gradle-plugin)
+![Build](https://github.com/getgauge/gauge-gradle-plugin/actions/workflows/build.yml/badge.svg)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v1.4%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 
 # Gauge Gradle Plugin
