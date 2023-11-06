@@ -28,7 +28,6 @@ If you have an existing project, and you would like to add the plugin manually y
 
 ```groovy
 plugins {
-    id 'java'
     id 'org.gauge' version '2.0.0'
 }
 
@@ -61,15 +60,14 @@ gauge {
 buildscript {
     repositories {
         maven {
-            url = uri("https://plugins.gradle.org/m2/")
+            url "https://plugins.gradle.org/m2/"
         }
     }
     dependencies {
-        classpath("org.gauge.gradle:gauge-gradle-plugin:2.0.0")
+        classpath "org.gauge.gradle:gauge-gradle-plugin:2.0.0"
     }
 }
 
-apply plugin: 'java'
 apply plugin: 'org.gauge'
 
 repositories {
