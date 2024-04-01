@@ -33,7 +33,7 @@ testing {
         integrationTest(JvmTestSuite) {
             dependencies {
                 implementation project()
-                implementation 'commons-io:commons-io:2.15.+'
+                implementation 'commons-io:commons-io:2.16.+'
                 implementation 'org.hamcrest:hamcrest:2.2'
             }
             targets {
