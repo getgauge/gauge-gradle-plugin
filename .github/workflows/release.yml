@@ -22,7 +22,7 @@ jobs:
           gauge-plugins: java, html-report, xml-report
       - uses: gradle/gradle-build-action@v3
         with:
-          gradle-version: '8.2'
+          gradle-version: '8.7'
       - name: Upload to gradle portal
         run: |
           ./gradlew plugin:build

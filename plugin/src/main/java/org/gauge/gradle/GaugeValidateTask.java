@@ -23,6 +23,7 @@ public abstract class GaugeValidateTask extends GaugeTask {
             spec.executable(command.getExecutable());
             spec.args("validate");
             spec.args(command.getProjectDir());
+            spec.args(command.getEnvironment());
             spec.args(command.getSpecsDir());
             spec.environment(GaugeConstants.GAUGE_CUSTOM_CLASSPATH, getClasspath().getAsPath());
             if (null != extension) {
