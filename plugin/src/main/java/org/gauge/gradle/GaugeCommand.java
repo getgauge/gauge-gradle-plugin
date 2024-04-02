@@ -51,7 +51,15 @@ class GaugeCommand {
     }
 
     public List<String> getEnvironment() {
-        return List.of(GaugeProperty.ENV.getFlag(), getEnv().trim());
+        final String env = getEnv().trim();
+        return isDefaultEnvironment(env)
+                // skipping adding args to command
+                ? Collections.emptyList()
+                : List.of(GaugeProperty.ENV.getFlag(), getEnv().trim());
+    }
+
+    private boolean isDefaultEnvironment(final String env) {
+        return "default".equals(env.trim());
     }
 
     private String getEnv() {
