@@ -37,11 +37,9 @@ class GaugeCommandTest {
 
     @Test
     void testEnvProperty() {
-        assertEquals(List.of(), new GaugeCommand(extension, project).getEnvironment());
+        assertEquals(List.of(GaugeProperty.ENV.getFlag(), "default"), new GaugeCommand(extension, project).getEnvironment());
         extension.getEnv().set("env");
         assertEquals(List.of(GaugeProperty.ENV.getFlag(), "env"), new GaugeCommand(extension, project).getEnvironment());
-        extension.getEnv().set("default");
-        assertEquals(List.of(), new GaugeCommand(extension, project).getEnvironment());
         setProjectProperty(GaugeProperty.ENV.getKey(), "project ");
         assertEquals(List.of(GaugeProperty.ENV.getFlag(), "project"), new GaugeCommand(extension, project).getEnvironment());
     }
