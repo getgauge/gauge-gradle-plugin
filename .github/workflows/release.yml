@@ -20,9 +20,9 @@ jobs:
       - uses: getgauge/setup-gauge@master
         with:
           gauge-plugins: java, html-report, xml-report
-      - uses: gradle/gradle-build-action@v3
+      - uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '8.7'
+          gradle-version: '8.12'
       - name: Upload to gradle portal
         run: |
           ./gradlew plugin:build
