@@ -81,7 +81,7 @@ public class RunTest extends Base {
         // And additionalFlags include the --verbose flag
         writeFile(buildFile, getApplyPluginsBlock()
                 + "gauge {environmentVariables=['customVariable': 'customValue']\n"
-                + "additionalFlags='--simple-console --verbose'}\n");
+                + "additionalFlags='--simple-console --verbose --verbose'}\n");
         // Then I should be able to run the gauge task
         BuildResult resultWithExtension = defaultGradleRunner().withArguments(GAUGE_TASK).build();
         assertEquals(SUCCESS, resultWithExtension.task(GAUGE_TASK_PATH).getOutcome());
@@ -99,7 +99,7 @@ public class RunTest extends Base {
         writeFile(buildFile, getApplyPluginsBlock()
                 + "gauge {specsDir='specs multipleSpecs'\n"
                 + "inParallel=true\n"
-                + "additionalFlags='--simple-console'}\n");
+                + "additionalFlags='--simple-console --verbose'}\n");
         // Then I should be able to run the gauge task
         BuildResult resultWithExtension = defaultGradleRunner().withArguments(GAUGE_TASK).build();
         assertEquals(SUCCESS, resultWithExtension.task(GAUGE_TASK_PATH).getOutcome());
@@ -125,7 +125,7 @@ public class RunTest extends Base {
         writeFile(buildFile, getApplyPluginsBlock()
                 + "gauge {specsDir='specs multipleSpecs'\n"
                 + "inParallel=true\n"
-                + "additionalFlags='--simple-console'\n"
+                + "additionalFlags='--simple-console --verbose'\n"
                 + "tags='example1'}");
         // Then I should be able to run the gauge task
         BuildResult resultWithExtension = defaultGradleRunner().withArguments(GAUGE_TASK).build();
