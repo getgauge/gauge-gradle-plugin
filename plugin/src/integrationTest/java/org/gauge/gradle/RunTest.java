@@ -81,7 +81,7 @@ public class RunTest extends Base {
         // And additionalFlags include the --verbose flag
         writeFile(buildFile, getApplyPluginsBlock()
                 + "gauge {environmentVariables=['customVariable': 'customValue']\n"
-                + "additionalFlags='--simple-console --verbose --verbose'}\n");
+                + "additionalFlags='--simple-console --verbose'}\n");
         // Then I should be able to run the gauge task
         BuildResult resultWithExtension = defaultGradleRunner().withArguments(GAUGE_TASK).build();
         assertEquals(SUCCESS, resultWithExtension.task(GAUGE_TASK_PATH).getOutcome());
@@ -95,23 +95,24 @@ public class RunTest extends Base {
     void testCanRunGaugeTestsWhenInParallelSet() throws IOException {
         // Given plugin is applied
         // When inParallel=true is set in extension
-        // And additionalFlags include the --verbose flag
+        // And additionalFlags include the --simple-console flag
         writeFile(buildFile, getApplyPluginsBlock()
                 + "gauge {specsDir='specs multipleSpecs'\n"
                 + "inParallel=true\n"
-                + "additionalFlags='--simple-console --verbose'}\n");
+                + "nodes=2\n"
+                + "additionalFlags='--simple-console'}\n");
         // Then I should be able to run the gauge task
         BuildResult resultWithExtension = defaultGradleRunner().withArguments(GAUGE_TASK).build();
         assertEquals(SUCCESS, resultWithExtension.task(GAUGE_TASK_PATH).getOutcome());
         // And I should see tests running in default parallel streams
-        assertThat(resultWithExtension.getOutput(), containsString("parallel streams."));
+        assertThat(resultWithExtension.getOutput(), containsString("Executing in 2 parallel streams."));
         // And I should see all 4 specifications were executed
         assertThat(resultWithExtension.getOutput(), containsString("Specifications:\t4 executed"));
-        // When nodes=2 project property is set
-        BuildResult resultWithProperty = defaultGradleRunner().withArguments(GAUGE_TASK, "-Pnodes=2").build();
+        // When nodes=3 project property is set
+        BuildResult resultWithProperty = defaultGradleRunner().withArguments(GAUGE_TASK, "-Pnodes=3").build();
         assertEquals(SUCCESS, resultWithProperty.task(GAUGE_TASK_PATH).getOutcome());
         // Then I should see tests running in 2 parallel streams
-        assertThat(resultWithProperty.getOutput(), containsString("Executing in 2 parallel streams."));
+        assertThat(resultWithProperty.getOutput(), containsString("Executing in 3 parallel streams."));
         // And I should see all 4 specifications were executed
         assertThat(resultWithProperty.getOutput(), containsString("Specifications:\t4 executed"));
     }
@@ -120,12 +121,12 @@ public class RunTest extends Base {
     void testCanRunGaugeTestsWhenTagsSet() throws IOException {
         // Given plugin is applied
         // When inParallel=true is set in extension
-        // And additionalFlags include the --verbose flag
+        // And additionalFlags include the --simple-console flag
         // And tags=example1 set to run
         writeFile(buildFile, getApplyPluginsBlock()
                 + "gauge {specsDir='specs multipleSpecs'\n"
                 + "inParallel=true\n"
-                + "additionalFlags='--simple-console --verbose'\n"
+                + "additionalFlags='--simple-console'\n"
                 + "tags='example1'}");
         // Then I should be able to run the gauge task
         BuildResult resultWithExtension = defaultGradleRunner().withArguments(GAUGE_TASK).build();
@@ -169,7 +170,7 @@ public class RunTest extends Base {
     void testCanRunGaugeTestsWhenRepeatFlagSet() throws IOException {
         // Given plugin is applied
         // When inParallel=true is set in extension
-        // And additionalFlags include the --verbose flag
+        // And additionalFlags include the --simple-console flag
         // When env is set to dev
         writeFile(buildFile, getApplyPluginsBlock()
                 + "gauge {inParallel=true\n"
