@@ -1,15 +1,13 @@
 package org.gauge.gradle;
 
-import org.gradle.testkit.runner.GradleRunner;
-import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-
 import static org.gauge.gradle.GaugeConstants.GAUGE_CLASSPATH_TASK;
 import static org.gauge.gradle.GaugeConstants.GAUGE_TASK;
 import static org.gradle.testkit.runner.TaskOutcome.SUCCESS;
-import static org.gradle.testkit.runner.TaskOutcome.UP_TO_DATE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.io.IOException;
+import org.gradle.testkit.runner.GradleRunner;
+import org.junit.jupiter.api.Test;
 
 public class UpToDateTest extends Base {
 
@@ -36,14 +34,14 @@ public class UpToDateTest extends Base {
     }
 
     @Test
-    void testGaugeClasspathTaskIsCached() throws IOException {
+    void testGaugeClasspathTaskIsNotCached() throws IOException {
         copyGaugeProjectToTemp("project1");
         // Given plugin is applied
         writeFile(buildFile, getApplyPluginsBlock());
         // Then I should be able to run the gauge task
         GradleRunner runner = defaultGradleRunner().withArguments(GAUGE_CLASSPATH_TASK);
         assertEquals(SUCCESS, runner.build().task(":" + GAUGE_CLASSPATH_TASK).getOutcome());
-        assertEquals(UP_TO_DATE, runner.build().task(":" + GAUGE_CLASSPATH_TASK).getOutcome());
+        assertEquals(SUCCESS, runner.build().task(":" + GAUGE_CLASSPATH_TASK).getOutcome());
     }
 
 }

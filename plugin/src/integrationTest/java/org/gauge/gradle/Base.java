@@ -1,17 +1,16 @@
 package org.gauge.gradle;
 
-import org.apache.commons.io.FileUtils;
-import org.gradle.testkit.runner.GradleRunner;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.io.TempDir;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
+import org.apache.commons.io.FileUtils;
+import org.gradle.testkit.runner.GradleRunner;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.io.TempDir;
 
 class Base {
 

@@ -6,18 +6,29 @@
 
 package org.gauge.gradle;
 
+import javax.inject.Inject;
+import org.gradle.api.DefaultTask;
+import org.gradle.api.Project;
+import org.gradle.api.tasks.SourceSetContainer;
 import org.gradle.api.tasks.TaskAction;
-import org.gradle.api.tasks.testing.Test;
 
-public abstract class GaugeClasspathTask extends Test {
+public abstract class GaugeClasspathTask extends DefaultTask {
 
-    public GaugeClasspathTask() {
+    private final Project project;
+
+    @Inject
+    public GaugeClasspathTask(final Project project) {
+        this.project = project;
         this.setGroup(GaugeConstants.GAUGE_TASK_GROUP);
         this.setDescription("Gets the classpath.");
+        this.dependsOn("build");
     }
 
     @TaskAction
     public void classpath() {
-        System.out.println(getClasspath().getAsPath());
+        System.out.println(project.getExtensions().getByType(SourceSetContainer.class)
+            .getByName("test")
+            .getRuntimeClasspath()
+            .getAsPath());
     }
 }

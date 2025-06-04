@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-class GaugeCommand {
+public class GaugeCommand {
 
     private final GaugeExtension extension;
     private final Map<String, ?> properties;

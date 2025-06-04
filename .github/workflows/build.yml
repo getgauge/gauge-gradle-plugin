@@ -32,6 +32,6 @@ jobs:
     - name: Build with Gradle on windows
       if: matrix.os == 'windows-latest'
       run: |
-        gauge config runner_connection_timeout 60000
+        gauge config runner_connection_timeout 300000
         .\gradlew.bat plugin:build
         .\gradlew.bat gaugeDevRepeat

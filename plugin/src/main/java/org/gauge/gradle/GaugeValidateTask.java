@@ -1,36 +1,24 @@
 package org.gauge.gradle;
 
+import javax.inject.Inject;
 import org.gradle.api.Project;
-import org.gradle.api.tasks.TaskAction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.gradle.process.ExecOperations;
+import org.gradle.process.ExecSpec;
 
-public abstract class GaugeValidateTask extends GaugeTask {
-    private static final Logger logger = LoggerFactory.getLogger("gauge");
+public abstract class GaugeValidateTask extends AbstractGaugeTask {
 
-    public GaugeValidateTask() {
-        this.setGroup(GaugeConstants.GAUGE_TASK_GROUP);
+    @Inject
+    public GaugeValidateTask(final ExecOperations execOps, final Project project) {
+        super(execOps, project);
         this.setDescription("Check for validation and parse errors.");
-        // So that previous outputs of this task cannot be reused
-        this.getOutputs().upToDateWhen(task -> false);
     }
-    @TaskAction
-    public void execute() {
-        final Project project = getProject();
-        final GaugeExtension extension = project.getExtensions().findByType(GaugeExtension.class);
-        final GaugeCommand command = new GaugeCommand(extension, project);
-        project.exec(spec -> {
-            spec.executable(command.getExecutable());
-            spec.args("validate");
-            spec.args(command.getProjectDir());
-            spec.args(command.getEnvironment());
-            spec.args(command.getSpecsDir());
-            spec.environment(GaugeConstants.GAUGE_CUSTOM_CLASSPATH, getClasspath().getAsPath());
-            if (null != extension) {
-                extension.getEnvironmentVariables().get().forEach(spec::environment);
-            }
-            logger.info("Running {} {}", spec.getExecutable(), spec.getArgs());
-        });
+
+    @Override
+    protected void configureSpec(final ExecSpec spec, final GaugeCommand command) {
+        spec.args("validate");
+        spec.args(command.getProjectDir());
+        spec.args(command.getEnvironment());
+        spec.args(command.getSpecsDir());
     }
 
 }
