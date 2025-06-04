@@ -10,6 +10,7 @@ import org.gradle.api.tasks.Optional;
 import javax.inject.Inject;
 
 public abstract class GaugeExtension {
+
     @Inject
     public GaugeExtension() {
         getEnv().convention(gradleProperty(GaugeProperty.ENV.getKey()).getOrElse("default"));

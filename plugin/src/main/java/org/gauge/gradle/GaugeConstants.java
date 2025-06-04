@@ -8,5 +8,4 @@ class GaugeConstants {
     public static final String GAUGE_CLASSPATH_TASK = "classpath";
     public static final String GAUGE_VALIDATE_TASK = "gaugeValidate";
     public static final String GAUGE_CUSTOM_CLASSPATH = "gauge_custom_classpath";
-
 }
