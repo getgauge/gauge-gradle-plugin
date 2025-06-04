@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Set;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
 import org.gradle.api.plugins.JavaPlugin;
@@ -38,10 +39,8 @@ public class GaugePluginTest {
     @Test
     void gaugeTasksShouldDependOnBuild() {
         project.getPluginManager().apply(GAUGE_PLUGIN_ID);
-        project.getTasks().withType(AbstractGaugeTask.class).forEach(task -> assertTrue(
-            task.getDependsOn().stream().anyMatch(dep -> "build".equals(dep.toString())),
-            "Task " + task.getName() + " should depend on 'build'"
-        ));
+        project.getTasks().withType(AbstractGaugeTask.class)
+            .forEach(task -> assertTrue(task.getDependsOn().containsAll(Set.of("testClasses", "classes"))));
     }
 
     @Test

@@ -23,7 +23,7 @@ public abstract class AbstractGaugeTask extends DefaultTask {
         this.execOps = execOps;
         this.project = project;
         this.setGroup(GaugeConstants.GAUGE_TASK_GROUP);
-        this.dependsOn("build");
+        this.dependsOn("classes", "testClasses");
     }
 
     protected abstract void configureSpec(final ExecSpec spec, final GaugeCommand command);
