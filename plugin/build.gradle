@@ -17,6 +17,10 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
+tasks.withType(JavaCompile).configureEach {
+    options.release = 17
+}
+
 pmd {
     consoleOutput = true
 }
