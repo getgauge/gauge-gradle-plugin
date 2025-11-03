@@ -1,7 +1,7 @@
 plugins {
     id 'java-gradle-plugin'
     id 'jvm-test-suite'
-    id 'com.gradle.plugin-publish' version '1.3.1'
+    id 'com.gradle.plugin-publish' version '2.0.0'
     id 'pmd'
 }
 
@@ -13,8 +13,8 @@ repositories {
 group = 'org.gauge.gradle'
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 pmd {
@@ -26,7 +26,7 @@ testing {
         configureEach {
             useJUnitJupiter()
             dependencies {
-                implementation "org.junit.jupiter:junit-jupiter:5.+"
+                implementation "org.junit.jupiter:junit-jupiter:6.+"
                 runtimeOnly "org.junit.platform:junit-platform-launcher"
             }
         }
