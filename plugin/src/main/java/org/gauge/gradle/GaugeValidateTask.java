@@ -9,8 +9,7 @@ public abstract class GaugeValidateTask extends AbstractGaugeTask {
 
     @Inject
     public GaugeValidateTask(final ExecOperations execOps, final Project project) {
-        super(execOps, project);
-        this.setDescription("Check for validation and parse errors.");
+        super(execOps, project, "Check for validation and parse errors.");
     }
 
     @Override

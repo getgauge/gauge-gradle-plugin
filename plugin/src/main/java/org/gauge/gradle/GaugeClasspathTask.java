@@ -19,9 +19,9 @@ public abstract class GaugeClasspathTask extends DefaultTask {
     @Inject
     public GaugeClasspathTask(final Project project) {
         this.project = project;
-        this.setGroup(GaugeConstants.GAUGE_TASK_GROUP);
-        this.setDescription("Gets the classpath.");
-        this.dependsOn("build");
+        super.setGroup(GaugeConstants.GAUGE_TASK_GROUP);
+        super.setDescription("Gets the classpath.");
+        super.dependsOn("build");
     }
 
     @TaskAction

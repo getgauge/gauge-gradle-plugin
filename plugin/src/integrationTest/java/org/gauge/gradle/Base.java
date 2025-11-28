@@ -22,7 +22,7 @@ class Base {
     protected static final String GAUGE_TASK_PATH = ":gauge";
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         settingsFile = new File(primaryProjectDir, "settings.gradle");
         buildFile = new File(primaryProjectDir, "build.gradle");
     }
@@ -49,9 +49,15 @@ class Base {
     }
 
     protected String getApplyPluginsBlock() {
-        return "plugins {id 'org.gauge'}\n"
-                + "repositories {mavenLocal()\nmavenCentral()}\n"
-                + "dependencies {testImplementation 'com.thoughtworks.gauge:gauge-java:+'}\n";
+        return """
+            plugins {id 'org.gauge'}
+            repositories {mavenLocal()
+            mavenCentral()}
+            dependencies {testImplementation 'com.thoughtworks.gauge:gauge-java:+'}
+            tasks.withType(AbstractTestTask).configureEach {
+                failOnNoDiscoveredTests = false
+            }
+            """;
     }
 
     protected GradleRunner defaultGradleRunner() {
