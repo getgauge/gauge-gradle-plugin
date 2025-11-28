@@ -9,8 +9,7 @@ public abstract class GaugeTask extends AbstractGaugeTask {
 
     @Inject
     public GaugeTask(final ExecOperations execOps, final Project project) {
-        super(execOps, project);
-        this.setDescription("Runs the Gauge test suite.");
+        super(execOps, project, "Runs the Gauge test suite.");
     }
 
     @Override

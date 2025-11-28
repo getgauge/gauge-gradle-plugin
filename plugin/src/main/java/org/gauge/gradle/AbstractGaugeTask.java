@@ -19,11 +19,12 @@ public abstract class AbstractGaugeTask extends DefaultTask {
     protected final Project project;
 
     @Inject
-    public AbstractGaugeTask(final ExecOperations execOps, final Project project) {
+    public AbstractGaugeTask(final ExecOperations execOps, final Project project, final String description) {
         this.execOps = execOps;
         this.project = project;
-        this.setGroup(GaugeConstants.GAUGE_TASK_GROUP);
-        this.dependsOn("classes", "testClasses");
+        super.setGroup(GaugeConstants.GAUGE_TASK_GROUP);
+        super.setDescription(description);
+        super.dependsOn("classes", "testClasses");
     }
 
     protected abstract void configureSpec(final ExecSpec spec, final GaugeCommand command);

@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class GaugeCommand {
 
@@ -28,8 +27,8 @@ public class GaugeCommand {
         return project.hasProperty(GaugeProperty.GAUGE_ROOT.getKey())
                 ? getExecutablePath(properties.get(GaugeProperty.GAUGE_ROOT.getKey()).toString()).toString()
                 : extension.getGaugeRoot().isPresent()
-                ? getExecutablePath(extension.getGaugeRoot().get()).toString()
-                : binary;
+                    ? getExecutablePath(extension.getGaugeRoot().get()).toString()
+                    : binary;
     }
 
     private Path getExecutablePath(final String gaugeRoot) {
@@ -68,13 +67,11 @@ public class GaugeCommand {
     public List<Object> getFlags() {
         final List<Object> flags = new ArrayList<>(getAdditionalFlags());
         // --repeat and --failed flags cannot be run with other flags
-        if (isNotFailedOrRepeatFlagProvided()) {
-            if (isInParallel()) {
-                flags.add(GaugeProperty.IN_PARALLEL.getFlag());
-                final int nodes = getNodes();
-                if (nodes != 0) {
-                    flags.addAll(List.of(GaugeProperty.NODES.getFlag(), nodes));
-                }
+        if (isNotFailedOrRepeatFlagProvided() && isInParallel()) {
+            flags.add(GaugeProperty.IN_PARALLEL.getFlag());
+            final int nodes = getNodes();
+            if (nodes != 0) {
+                flags.addAll(List.of(GaugeProperty.NODES.getFlag(), nodes));
             }
         }
         return flags;
@@ -89,7 +86,7 @@ public class GaugeCommand {
     }
 
     private List<String> getListFromString(final String value) {
-        return Arrays.stream(value.split("\\s+")).map(String::trim).collect(Collectors.toList());
+        return Arrays.stream(value.split("\\s+")).map(String::trim).toList();
     }
 
     private int getNodes() {
