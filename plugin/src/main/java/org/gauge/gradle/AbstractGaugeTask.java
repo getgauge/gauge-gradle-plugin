@@ -36,7 +36,7 @@ public abstract class AbstractGaugeTask extends DefaultTask {
      * @param description the task description
      */
     @Inject
-    protected AbstractGaugeTask(final ExecOperations execOps, final Project project, final String description) {
+    public AbstractGaugeTask(final ExecOperations execOps, final Project project, final String description) {
         this.execOps = execOps;
         this.project = project;
         super.setGroup(GaugeConstants.GAUGE_TASK_GROUP);
