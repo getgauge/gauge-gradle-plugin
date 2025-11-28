@@ -54,6 +54,9 @@ class Base {
             repositories {mavenLocal()
             mavenCentral()}
             dependencies {testImplementation 'com.thoughtworks.gauge:gauge-java:+'}
+            tasks.withType(AbstractTestTask).configureEach {
+                failOnNoDiscoveredTests = false
+            }
             """;
     }
 
