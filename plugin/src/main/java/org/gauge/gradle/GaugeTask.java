@@ -17,7 +17,7 @@ public abstract class GaugeTask extends AbstractGaugeTask {
      * @param project the Gradle project
      */
     @Inject
-    protected GaugeTask(final ExecOperations execOps, final Project project) {
+    public GaugeTask(final ExecOperations execOps, final Project project) {
         super(execOps, project, "Runs the Gauge test suite.");
     }
 

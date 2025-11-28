@@ -17,7 +17,7 @@ public abstract class GaugeValidateTask extends AbstractGaugeTask {
      * @param project the Gradle project
      */
     @Inject
-    protected GaugeValidateTask(final ExecOperations execOps, final Project project) {
+    public GaugeValidateTask(final ExecOperations execOps, final Project project) {
         super(execOps, project, "Check for validation and parse errors.");
     }
 
