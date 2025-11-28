@@ -10,8 +10,22 @@ import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.plugins.JavaLibraryPlugin;
 
+/**
+ * Gradle plugin for integrating Gauge with Java projects.
+ */
 public class GaugePlugin implements Plugin<Project> {
+    /**
+     * Default constructor for GaugePlugin.
+     */
+    public GaugePlugin() {
+        super();
+    }
 
+    /**
+     * Applies the Gauge plugin to the given project.
+     *
+     * @param project the Gradle project
+     */
     @Override
     public void apply(Project project) {
         // java plugin needs to be applied as Gauge relies on java test classpath
