@@ -71,3 +71,7 @@ tasks.register('gaugeDevRepeat', GaugeTask) {
         }
     }
 }
+
+tasks.withType(AbstractTestTask).configureEach {
+    failOnNoDiscoveredTests = false
+}
