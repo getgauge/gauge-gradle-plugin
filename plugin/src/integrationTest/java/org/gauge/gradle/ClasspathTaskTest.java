@@ -8,21 +8,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import org.gradle.testkit.runner.BuildResult;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class ClasspathTaskTest extends Base {
 
-    @Test
-    void testCanRunGaugeClasspathTaskWithGaugeDependency() throws IOException {
+    @ParameterizedTest
+    @MethodSource(SUPPORTED_GRADLE_VERSIONS_FOR_CURRENT_JVM)
+    void testCanRunGaugeClasspathTaskWithGaugeDependency(GradleTestVersion gradle) throws IOException {
         copyGaugeFixtureToTemp();
         // Given plugin is applied without gauge extension
         // And gauge-java dependency included
         writeFile(buildFilePath, getApplyPluginsBlock());
         // Then I should be able to run the classpath task
-        BuildResult result = defaultGradleRunner().withArguments(GAUGE_CLASSPATH_TASK).build();
+        BuildResult result = defaultGradleRunner(gradle).withArguments(GAUGE_CLASSPATH_TASK).build();
         assertEquals(SUCCESS, result.task(":" + GAUGE_CLASSPATH_TASK).getOutcome());
         assertThat(result.getOutput(), containsString("gauge-java"));
         assertThat(result.getOutput(), containsString("assertj-core"));
     }
-
 }

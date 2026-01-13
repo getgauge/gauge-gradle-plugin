@@ -14,24 +14,21 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
+        java-test-version: [ 17, 21, 25 ]
+      fail-fast: false
     steps:
     - uses: actions/checkout@v7
     - uses: actions/setup-java@v5
       with:
         distribution: 'temurin'
-        java-version: '17' # should be same as project version
-        cache: 'gradle'
+        java-version: | # last version takes precedence as default
+          ${{ matrix.java-test-version }}
+          25
+        cache: gradle
     - uses: getgauge/setup-gauge@master
       with:
         gauge-plugins: java, html-report, xml-report
     - uses: gradle/actions/setup-gradle@v6
-    - name: Build with Gradle on ubuntu
-      if: matrix.os != 'windows-latest'
+    - name: Build with Gradle
       run: |
-        ./gradlew build
-        ./gradlew gaugeValidate gaugeDevRepeat
-    - name: Build with Gradle on windows
-      if: matrix.os == 'windows-latest'
-      run: |
-        gauge config runner_connection_timeout 300000
-        .\gradlew.bat build && .\gradlew.bat gaugeValidate gaugeDevRepeat
+        ./gradlew check -PtestToolchainJdkVersion=${{ matrix.java-test-version }}
