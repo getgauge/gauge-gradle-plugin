@@ -55,7 +55,6 @@ abstract class Base {
               id 'org.gauge'
             }
             repositories {
-              mavenLocal()
               mavenCentral()
             }
             dependencies {
