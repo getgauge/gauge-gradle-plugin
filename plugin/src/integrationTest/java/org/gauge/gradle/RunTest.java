@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import org.gradle.testkit.runner.BuildResult;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
@@ -122,7 +121,7 @@ class RunTest extends Base {
                 }
                 """);
         // Then I should be able to run the gauge task
-        BuildResult resultWithExtension = defaultGradleRunner().withGradleVersion(gradle.ver).withArguments(GAUGE_TASK).build();
+        BuildResult resultWithExtension = defaultGradleRunner().withGradleVersion(gradle.ver).withArguments(GAUGE_TASK, "--info").withDebug(true).build();
         assertEquals(SUCCESS, resultWithExtension.task(GAUGE_TASK_PATH).getOutcome());
         // And I should see tests running in default parallel streams
         assertThat(resultWithExtension.getOutput(), containsString("Executing in 2 parallel streams."));
