@@ -4,11 +4,7 @@ import org.gradle.api.Project;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Represents a Gauge command and provides methods to construct command-line arguments for Gauge execution.
@@ -37,16 +33,13 @@ public class GaugeCommand {
      * @return the path to the Gauge executable
      */
     public String getExecutable() {
-        final String binary = "gauge";
         return project.hasProperty(GaugeProperty.GAUGE_ROOT.getKey())
-                ? getExecutablePath(properties.get(GaugeProperty.GAUGE_ROOT.getKey()).toString()).toString()
-                : extension.getGaugeRoot().isPresent()
-                    ? getExecutablePath(extension.getGaugeRoot().get()).toString()
-                    : binary;
+                ? getExecutablePath(properties.get(GaugeProperty.GAUGE_ROOT.getKey()).toString())
+                : extension.getGaugeRoot().map(this::getExecutablePath).getOrElse("gauge");
     }
 
-    private Path getExecutablePath(final String gaugeRoot) {
-        return Paths.get(gaugeRoot, "bin", "gauge");
+    private String getExecutablePath(final String gaugeRoot) {
+        return Paths.get(gaugeRoot, "bin", "gauge").toString();
     }
 
     /**
@@ -105,33 +98,33 @@ public class GaugeCommand {
             flags.add(GaugeProperty.IN_PARALLEL.getFlag());
             final int nodes = getNodes();
             if (nodes != 0) {
-                flags.addAll(List.of(GaugeProperty.NODES.getFlag(), nodes));
+                flags.add(GaugeProperty.NODES.getFlag());
+                flags.add(nodes);
             }
         }
         return flags;
     }
 
     private List<String> getAdditionalFlags() {
-        return project.hasProperty(GaugeProperty.ADDITIONAL_FLAGS.getKey())
-                ? getListFromString(properties.get(GaugeProperty.ADDITIONAL_FLAGS.getKey()).toString())
-                : extension.getAdditionalFlags().isPresent()
-                ? getListFromString(extension.getAdditionalFlags().get())
-                : Collections.emptyList();
+        return getListFromString(project.hasProperty(GaugeProperty.ADDITIONAL_FLAGS.getKey())
+                ? properties.get(GaugeProperty.ADDITIONAL_FLAGS.getKey()).toString()
+                : extension.getAdditionalFlags().getOrElse("")
+        );
     }
 
     private List<String> getListFromString(final String value) {
-        return Arrays.stream(value.split("\\s+")).map(String::trim).toList();
+        return Arrays.stream(value.split("\\s+")).map(String::trim).filter(s -> !s.isEmpty()).toList();
     }
 
     private int getNodes() {
         return project.hasProperty(GaugeProperty.NODES.getKey())
                 ? Integer.parseInt(properties.get(GaugeProperty.NODES.getKey()).toString())
-                : extension.getNodes().isPresent() ? extension.getNodes().get() : 0;
+                : extension.getNodes().getOrElse(0);
     }
 
     private boolean isInParallel() {
         return project.hasProperty(GaugeProperty.IN_PARALLEL.getKey())
-                ? Boolean.parseBoolean(project.getProperties().get(GaugeProperty.IN_PARALLEL.getKey()).toString())
+                ? Boolean.parseBoolean(properties.get(GaugeProperty.IN_PARALLEL.getKey()).toString())
                 : extension.getInParallel().get();
     }
 
@@ -154,7 +147,7 @@ public class GaugeCommand {
     public List<String> getTags() {
         final String tags = project.hasProperty(GaugeProperty.TAGS.getKey())
                 ? properties.get(GaugeProperty.TAGS.getKey()).toString()
-                : extension.getTags().isPresent() ? extension.getTags().get() : "";
+                : extension.getTags().getOrElse("");
         return !tags.isEmpty() ? List.of(GaugeProperty.TAGS.getFlag(), tags) : Collections.emptyList();
     }
 

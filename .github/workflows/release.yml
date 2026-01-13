@@ -17,6 +17,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
+          cache: 'gradle'
       - uses: getgauge/setup-gauge@master
         with:
           gauge-plugins: java, html-report, xml-report
