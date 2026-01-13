@@ -1,10 +1,7 @@
 import org.gauge.gradle.GaugeTask
 
 plugins {
-    id 'java'
-    id 'jvm-test-suite'
     id 'org.gauge'
-    id 'pmd'
 }
 
 repositories {
@@ -19,10 +16,6 @@ java {
 
 tasks.withType(JavaCompile).configureEach {
     options.release = 17
-}
-
-pmd {
-    consoleOutput = true
 }
 
 sourceSets {
