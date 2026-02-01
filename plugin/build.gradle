@@ -6,7 +6,6 @@ plugins {
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
 }
 
@@ -39,6 +38,9 @@ testing {
             targets {
                 all {
                     testTask.configure {
+                        javaLauncher = javaToolchains.launcherFor {
+                            languageVersion = JavaLanguageVersion.of(17)
+                        }
                         shouldRunAfter(test)
                     }
                 }
@@ -56,9 +58,7 @@ tasks.withType(Test).configureEach {
     }
 }
 
-tasks.named('check') {
-    dependsOn(testing.suites.named("integrationTest"))
-}
+tasks.check.dependsOn(tasks.named("integrationTest"))
 
 gradlePlugin {
     testSourceSets(sourceSets.integrationTest)

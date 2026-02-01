@@ -6,13 +6,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
+
 import org.apache.commons.io.FileUtils;
 import org.gradle.testkit.runner.GradleRunner;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.io.TempDir;
 
-class Base {
+abstract class Base {
 
     @TempDir
     File primaryProjectDir;
@@ -22,7 +23,7 @@ class Base {
     protected static final String GAUGE_TASK_PATH = ":gauge";
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         settingsFile = new File(primaryProjectDir, "settings.gradle");
         buildFile = new File(primaryProjectDir, "build.gradle");
     }
@@ -49,9 +50,20 @@ class Base {
     }
 
     protected String getApplyPluginsBlock() {
-        return "plugins {id 'org.gauge'}\n"
-                + "repositories {mavenLocal()\nmavenCentral()}\n"
-                + "dependencies {testImplementation 'com.thoughtworks.gauge:gauge-java:+'}\n";
+        return """
+            plugins {
+              id 'org.gauge'
+            }
+            repositories {
+              mavenCentral()
+            }
+            dependencies {
+              testImplementation 'com.thoughtworks.gauge:gauge-java:+'
+            }
+            tasks.withType(AbstractTestTask).configureEach {
+                if (GradleVersion.current().version >= '9') failOnNoDiscoveredTests = false
+            }
+            """;
     }
 
     protected GradleRunner defaultGradleRunner() {

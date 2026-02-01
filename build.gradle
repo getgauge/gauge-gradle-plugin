@@ -1,0 +1,9 @@
+plugins {
+    id 'base'
+}
+
+["assemble", "check", "build"].each { task ->
+    tasks.named(task) {
+        dependsOn(gradle.includedBuild("plugin").task(":$task"))
+    }
+}

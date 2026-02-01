@@ -1,24 +1,16 @@
 import org.gauge.gradle.GaugeTask
 
 plugins {
-    id 'java'
-    id 'jvm-test-suite'
     id 'org.gauge'
-    id 'pmd'
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
 }
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
-}
-
-pmd {
-    consoleOutput = true
 }
 
 sourceSets {
@@ -51,7 +43,7 @@ gauge {
     additionalFlags = '--verbose'
 }
 
-tasks.register('gaugeDev', GaugeTask) {
+def gaugeDev = tasks.register('gaugeDev', GaugeTask) {
     doFirst {
         gauge {
             specsDir = 'specs'
@@ -63,11 +55,21 @@ tasks.register('gaugeDev', GaugeTask) {
     }
 }
 
-tasks.register('gaugeDevRepeat', GaugeTask) {
-    dependsOn("gaugeDev")
+def gaugeDevRepeat = tasks.register('gaugeDevRepeat', GaugeTask) {
+    dependsOn(gaugeDev)
     doFirst {
         gauge {
             additionalFlags = '--repeat --simple-console'
         }
     }
 }
+
+tasks.withType(AbstractTestTask).configureEach {
+    failOnNoDiscoveredTests = false
+}
+
+def pluginCheck = gradle.includedBuild("plugin").task(":check")
+tasks.gaugeValidate.dependsOn(pluginCheck)
+tasks.gaugeDev.dependsOn(pluginCheck)
+
+tasks.check.dependsOn(gaugeValidate, gaugeDevRepeat)
