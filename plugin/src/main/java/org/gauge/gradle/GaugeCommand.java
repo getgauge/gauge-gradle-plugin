@@ -9,33 +9,51 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
+/**
+ * Represents a Gauge command and provides methods to construct command-line arguments for Gauge execution.
+ */
 public class GaugeCommand {
 
     private final GaugeExtension extension;
     private final Map<String, ?> properties;
     private final Project project;
 
+    /**
+     * Constructs a GaugeCommand instance.
+     *
+     * @param extension the GaugeExtension instance
+     * @param project   the Gradle project
+     */
     public GaugeCommand(final GaugeExtension extension, final Project project) {
         this.extension = extension;
         this.project = project;
         this.properties = project.getProperties();
     }
 
+    /**
+     * Returns the Gauge executable path.
+     *
+     * @return the path to the Gauge executable
+     */
     public String getExecutable() {
         final String binary = "gauge";
         return project.hasProperty(GaugeProperty.GAUGE_ROOT.getKey())
                 ? getExecutablePath(properties.get(GaugeProperty.GAUGE_ROOT.getKey()).toString()).toString()
                 : extension.getGaugeRoot().isPresent()
-                ? getExecutablePath(extension.getGaugeRoot().get()).toString()
-                : binary;
+                    ? getExecutablePath(extension.getGaugeRoot().get()).toString()
+                    : binary;
     }
 
     private Path getExecutablePath(final String gaugeRoot) {
         return Paths.get(gaugeRoot, "bin", "gauge");
     }
 
+    /**
+     * Returns the project directory argument for Gauge.
+     *
+     * @return a list containing the project directory flag and value
+     */
     public List<String> getProjectDir() {
         return List.of(GaugeProperty.PROJECT_DIR.getFlag(), getDir());
     }
@@ -50,6 +68,11 @@ public class GaugeCommand {
         return project.getProjectDir().toPath().resolve(Path.of(projectDir)).toAbsolutePath();
     }
 
+    /**
+     * Returns the environment argument for Gauge.
+     *
+     * @return a list containing the environment flag and value
+     */
     public List<String> getEnvironment() {
         return List.of(GaugeProperty.ENV.getFlag(), getEnv().trim());
     }
@@ -60,21 +83,29 @@ public class GaugeCommand {
                 : extension.getEnv().get();
     }
 
+    /**
+     * Returns true if neither --failed nor --repeat flags are provided.
+     *
+     * @return true if neither flag is present, false otherwise
+     */
     public boolean isNotFailedOrRepeatFlagProvided() {
         final List<String> flags = getAdditionalFlags();
         return !flags.contains("--failed") && !flags.contains("--repeat");
     }
 
+    /**
+     * Returns the list of flags for Gauge execution.
+     *
+     * @return a list of flags
+     */
     public List<Object> getFlags() {
         final List<Object> flags = new ArrayList<>(getAdditionalFlags());
         // --repeat and --failed flags cannot be run with other flags
-        if (isNotFailedOrRepeatFlagProvided()) {
-            if (isInParallel()) {
-                flags.add(GaugeProperty.IN_PARALLEL.getFlag());
-                final int nodes = getNodes();
-                if (nodes != 0) {
-                    flags.addAll(List.of(GaugeProperty.NODES.getFlag(), nodes));
-                }
+        if (isNotFailedOrRepeatFlagProvided() && isInParallel()) {
+            flags.add(GaugeProperty.IN_PARALLEL.getFlag());
+            final int nodes = getNodes();
+            if (nodes != 0) {
+                flags.addAll(List.of(GaugeProperty.NODES.getFlag(), nodes));
             }
         }
         return flags;
@@ -89,7 +120,7 @@ public class GaugeCommand {
     }
 
     private List<String> getListFromString(final String value) {
-        return Arrays.stream(value.split("\\s+")).map(String::trim).collect(Collectors.toList());
+        return Arrays.stream(value.split("\\s+")).map(String::trim).toList();
     }
 
     private int getNodes() {
@@ -104,12 +135,22 @@ public class GaugeCommand {
                 : extension.getInParallel().get();
     }
 
+    /**
+     * Returns the specs directory argument for Gauge.
+     *
+     * @return a list containing the specs directory flag and value
+     */
     public List<String> getSpecsDir() {
         final var specs = properties.containsKey(GaugeProperty.SPECS_DIR.getKey())
                 ? properties.get(GaugeProperty.SPECS_DIR.getKey()).toString() : extension.getSpecsDir().get();
         return getListFromString(specs.trim());
     }
 
+    /**
+     * Returns the tags argument for Gauge.
+     *
+     * @return a list containing the tags flag and value, or an empty list if not set
+     */
     public List<String> getTags() {
         final String tags = project.hasProperty(GaugeProperty.TAGS.getKey())
                 ? properties.get(GaugeProperty.TAGS.getKey()).toString()
