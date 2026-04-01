@@ -23,7 +23,7 @@ jobs:
     - uses: getgauge/setup-gauge@master
       with:
         gauge-plugins: java, html-report, xml-report
-    - uses: gradle/actions/setup-gradle@v5
+    - uses: gradle/actions/setup-gradle@v6
     - name: Build with Gradle on ubuntu
       if: matrix.os != 'windows-latest'
       run: |
