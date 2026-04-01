@@ -20,7 +20,7 @@ jobs:
       - uses: getgauge/setup-gauge@master
         with:
           gauge-plugins: java, html-report, xml-report
-      - uses: gradle/actions/setup-gradle@v5
+      - uses: gradle/actions/setup-gradle@v6
       - name: Upload to gradle portal
         run: |
           ./gradlew plugin:build
