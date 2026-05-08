@@ -1,6 +1,7 @@
 package org.gauge.gradle;
 
-class GaugeConstants {
+final class GaugeConstants {
+    private GaugeConstants() { }
     public static final String GAUGE_PLUGIN_ID = "org.gauge";
     public static final String GAUGE_EXTENSION_ID = "gauge";
     public static final String GAUGE_TASK = GAUGE_EXTENSION_ID;
