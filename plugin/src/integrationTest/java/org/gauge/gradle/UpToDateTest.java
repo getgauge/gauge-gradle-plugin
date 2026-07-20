@@ -9,7 +9,7 @@ import java.io.IOException;
 import org.gradle.testkit.runner.GradleRunner;
 import org.junit.jupiter.api.Test;
 
-public class UpToDateTest extends Base {
+class UpToDateTest extends Base {
 
     @Test
     void testGaugeTaskIsNotCached() throws IOException {

@@ -1,13 +1,5 @@
 package org.gauge.gradle;
 
-import org.gradle.testkit.runner.BuildResult;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-
 import static org.gauge.gradle.GaugeConstants.GAUGE_TASK;
 import static org.gradle.testkit.runner.TaskOutcome.FAILED;
 import static org.gradle.testkit.runner.TaskOutcome.SUCCESS;
@@ -16,12 +8,19 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class RunTest extends Base {
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import org.gradle.testkit.runner.BuildResult;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+class RunTest extends Base {
 
     private static final String GAUGE_PROJECT_ONE = "project1";
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         copyGaugeProjectToTemp(GAUGE_PROJECT_ONE);
     }
 
