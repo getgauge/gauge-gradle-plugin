@@ -1,18 +1,17 @@
 package org.gauge.gradle;
 
-import org.gradle.api.Project;
-import org.gradle.testfixtures.ProjectBuilder;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class GaugeExtensionTest {
+import java.util.Map;
+import org.gradle.api.Project;
+import org.gradle.testfixtures.ProjectBuilder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+class GaugeExtensionTest {
 
     private GaugeExtension extension;
 
@@ -25,7 +24,7 @@ public class GaugeExtensionTest {
     }
 
     @Test
-    public void testDefaultProperties() {
+    void testDefaultProperties() {
         assertEquals("default", extension.getEnv().get());
         assertFalse(extension.getTags().isPresent());
         assertEquals("specs", extension.getSpecsDir().get());
@@ -37,7 +36,7 @@ public class GaugeExtensionTest {
     }
 
     @Test
-    public void testExtensionProperties() {
+    void testExtensionProperties() {
         setExtensionProperties();
         assertEquals("test", extension.getEnv().get());
         assertEquals("(tag1|tag2)&tag3", extension.getTags().get());

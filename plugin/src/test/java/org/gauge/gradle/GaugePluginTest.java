@@ -19,16 +19,16 @@ import org.gradle.testfixtures.ProjectBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class GaugePluginTest {
+class GaugePluginTest {
     private Project project;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         project = ProjectBuilder.builder().build();
     }
 
     @Test
-    public void pluginShouldBeAddedOnApply() {
+    void pluginShouldBeAddedOnApply() {
         project.getPluginManager().apply(GAUGE_PLUGIN_ID);
         assertTrue(project.getPluginManager().hasPlugin("java"));
         assertTrue(project.getPluginManager().hasPlugin(GAUGE_PLUGIN_ID));
@@ -44,7 +44,7 @@ public class GaugePluginTest {
     }
 
     @Test
-    public void taskShouldBeAddedOnApply() {
+    void taskShouldBeAddedOnApply() {
         project.getPluginManager().apply(GAUGE_PLUGIN_ID);
         TaskContainer tasks = project.getTasks();
         var tasksMap = tasks.getAsMap();

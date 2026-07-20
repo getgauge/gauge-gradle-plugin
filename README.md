@@ -6,8 +6,8 @@
 
 Use the gauge-gradle-plugin to execute specifications in your [Gauge](https://gauge.org) Java project and manage dependencies using [Gradle](http://gradle.org//).
 
-> **NOTE**: Prior to v1.8.0 the `gauge-gradle-plugin` had a different community maintainer. Versions prior to this were published to 
-Maven Central & Bintray; with out-of-date versions available on the Gradle Plugins Portal.
+> **NOTE**: Prior to v1.8.0 the `gauge-gradle-plugin` had a different community maintainer. Versions prior to this were published to
+> Maven Central & Bintray; with out-of-date versions available on the Gradle Plugins Portal.
 >
 > From v1.8.0+ [the Gradle Plugins Portal](https://plugins.gradle.org/plugin/org.gauge) will be the primary means of release for this plugin; under the care of the core Gauge team.
 
@@ -28,7 +28,7 @@ If you have an existing project, and you would like to add the plugin manually y
 
 ```groovy
 plugins {
-    id 'org.gauge' version '2.1.0'
+    id 'org.gauge' version '3.1.0'
 }
 
 repositories {
@@ -64,7 +64,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath "org.gauge.gradle:gauge-gradle-plugin:2.1.0"
+        classpath "org.gauge.gradle:gauge-gradle-plugin:3.1.0"
     }
 }
 
