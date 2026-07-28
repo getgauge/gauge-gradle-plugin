@@ -5,20 +5,17 @@ plugins {
     id 'pmd'
 }
 
+group = "org.gauge.gradle"
+
 repositories {
     mavenLocal()
     mavenCentral()
 }
 
-group = 'org.gauge.gradle'
-
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
-
-tasks.withType(JavaCompile).configureEach {
-    options.release = 17
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
 pmd {
@@ -37,13 +34,15 @@ testing {
         integrationTest(JvmTestSuite) {
             dependencies {
                 implementation project()
-                implementation 'commons-io:commons-io:2.21.+'
-                implementation 'org.hamcrest:hamcrest:3.0'
+                implementation gradleTestKit()
+                implementation "commons-io:commons-io:2.21.+"
+                implementation "org.hamcrest:hamcrest:3.0"
             }
+
             targets {
                 all {
                     testTask.configure {
-                        shouldRunAfter(test)
+                        shouldRunAfter(tasks.named("test"))
                     }
                 }
             }
@@ -61,20 +60,20 @@ tasks.withType(Test).configureEach {
 }
 
 tasks.named('check') {
-    dependsOn(testing.suites.named("integrationTest"))
+    dependsOn(testing.suites.integrationTest)
 }
 
 gradlePlugin {
     testSourceSets(sourceSets.integrationTest)
     plugins {
-        vcsUrl = "https://github.com/getgauge/gauge-gradle-plugin.git"
-        website = "https://github.com/getgauge/gauge-gradle-plugin"
         gauge {
             id = "org.gauge"
             implementationClass = "org.gauge.gradle.GaugePlugin"
             displayName = "Gauge"
             description = "Gradle plugin for Gauge, the open source test automation tool developed by ThoughtWorks."
-            tags.addAll('gauge', 'thoughtworks', 'testing')
+            tags = ['gauge', 'thoughtworks', 'testing']
         }
     }
+    vcsUrl = "https://github.com/getgauge/gauge-gradle-plugin.git"
+    website = "https://github.com/getgauge/gauge-gradle-plugin"
 }

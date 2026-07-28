@@ -11,13 +11,13 @@ import java.io.IOException;
 import org.gradle.testkit.runner.BuildResult;
 import org.junit.jupiter.api.Test;
 
-class ValidateTest extends Base {
+class GaugeValidateTaskTest extends Base {
 
     @Test
     void testCanRunGaugeValidateTask() throws IOException {
-        copyGaugeProjectToTemp("project1");
+        copyGaugeFixtureToTemp();
         // Given plugin is applied without gauge extension
-        writeFile(buildFile, getApplyPluginsBlock());
+        writeFile(buildFilePath, getApplyPluginsBlock());
         // Then I should be able to run the classpath task
         BuildResult result = defaultGradleRunner().withArguments(GAUGE_VALIDATE_TASK).build();
         // And I should see no validation errors
@@ -25,7 +25,7 @@ class ValidateTest extends Base {
         assertThat(result.getOutput(), containsString("No errors found."));
         // When specsDir is set in extension
         // And example4.spec contains a missing step implementation
-        writeFile(buildFile, getApplyPluginsBlock() + "gauge {specsDir=\"multipleSpecs/example4.spec\"}\n");
+        writeFile(buildFilePath, getApplyPluginsBlock() + "gauge {specsDir=\"multipleSpecs/example4.spec\"}\n");
         BuildResult resultWithExtension = defaultGradleRunner().withArguments(GAUGE_VALIDATE_TASK).buildAndFail();
         // Then I should see a failure with a validation error
         assertEquals(FAILED, resultWithExtension.task(":" + GAUGE_VALIDATE_TASK).getOutcome());

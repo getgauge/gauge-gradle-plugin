@@ -9,13 +9,13 @@ import java.io.IOException;
 import org.gradle.testkit.runner.GradleRunner;
 import org.junit.jupiter.api.Test;
 
-class UpToDateTest extends Base {
+class UpToDateTaskTest extends Base {
 
     @Test
     void testGaugeTaskIsNotCached() throws IOException {
-        copyGaugeProjectToTemp("project1");
+        copyGaugeFixtureToTemp();
         // Given plugin is applied
-        writeFile(buildFile, getApplyPluginsBlock());
+        writeFile(buildFilePath, getApplyPluginsBlock());
         // Then I should be able to run the gauge task
         GradleRunner runner = defaultGradleRunner().withArguments(GAUGE_TASK);
         assertEquals(SUCCESS, runner.build().task(GAUGE_TASK_PATH).getOutcome());
@@ -24,9 +24,9 @@ class UpToDateTest extends Base {
 
     @Test
     void testGaugeValidateTaskIsNotCached() throws IOException {
-        copyGaugeProjectToTemp("project1");
+        copyGaugeFixtureToTemp();
         // Given plugin is applied
-        writeFile(buildFile, getApplyPluginsBlock());
+        writeFile(buildFilePath, getApplyPluginsBlock());
         // Then I should be able to run the gauge task
         GradleRunner runner = defaultGradleRunner().withArguments("gaugeValidate");
         assertEquals(SUCCESS, runner.build().task(":gaugeValidate").getOutcome());
@@ -35,9 +35,9 @@ class UpToDateTest extends Base {
 
     @Test
     void testGaugeClasspathTaskIsNotCached() throws IOException {
-        copyGaugeProjectToTemp("project1");
+        copyGaugeFixtureToTemp();
         // Given plugin is applied
-        writeFile(buildFile, getApplyPluginsBlock());
+        writeFile(buildFilePath, getApplyPluginsBlock());
         // Then I should be able to run the gauge task
         GradleRunner runner = defaultGradleRunner().withArguments(GAUGE_CLASSPATH_TASK);
         assertEquals(SUCCESS, runner.build().task(":" + GAUGE_CLASSPATH_TASK).getOutcome());

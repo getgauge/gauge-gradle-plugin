@@ -10,14 +10,14 @@ import java.io.IOException;
 import org.gradle.testkit.runner.BuildResult;
 import org.junit.jupiter.api.Test;
 
-class ClasspathTest extends Base {
+class ClasspathTaskTest extends Base {
 
     @Test
     void testCanRunGaugeClasspathTaskWithGaugeDependency() throws IOException {
-        copyGaugeProjectToTemp("project1");
+        copyGaugeFixtureToTemp();
         // Given plugin is applied without gauge extension
         // And gauge-java dependency included
-        writeFile(buildFile, getApplyPluginsBlock());
+        writeFile(buildFilePath, getApplyPluginsBlock());
         // Then I should be able to run the classpath task
         BuildResult result = defaultGradleRunner().withArguments(GAUGE_CLASSPATH_TASK).build();
         assertEquals(SUCCESS, result.task(":" + GAUGE_CLASSPATH_TASK).getOutcome());

@@ -1,0 +1,7 @@
+plugins {
+    id 'base'
+}
+
+tasks.configureEach { task ->
+    dependsOn(gradle.includedBuild("plugin").task(":${task.name}"))
+}
