@@ -15,19 +15,17 @@ import org.gradle.testkit.runner.BuildResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class RunTest extends Base {
-
-    private static final String GAUGE_PROJECT_ONE = "project1";
+class GaugeTaskTest extends Base {
 
     @BeforeEach
-    void setUp() {
-        copyGaugeProjectToTemp(GAUGE_PROJECT_ONE);
+    void setUp() throws IOException {
+        copyGaugeFixtureToTemp();
     }
 
     @Test
     void testCanRunGaugeTasksWithDefaultConfigurations() throws IOException {
         // Given plugin is applied
-        writeFile(buildFile, getApplyPluginsBlock());
+        writeFile(buildFilePath, getApplyPluginsBlock());
         // Then I should be able to run the gauge task
         BuildResult result = defaultGradleRunner().withArguments(GAUGE_TASK).build();
         assertEquals(SUCCESS, result.task(GAUGE_TASK_PATH).getOutcome());
@@ -37,9 +35,9 @@ class RunTest extends Base {
     @Test
     void testCanRunGaugeTestsWhenDirPropertySet() throws IOException {
         final File subProject = new File(Path.of(defaultGradleRunner().getProjectDir().getPath(), "subProject").toString());
-        copyGaugeProjectToTemp(GAUGE_PROJECT_ONE, subProject);
+        copyGaugeFixtureToTemp(subProject, "simple-project");
         // Given plugin is applied
-        writeFile(buildFile, getApplyPluginsBlock());
+        writeFile(buildFilePath, getApplyPluginsBlock());
         // Then I should be able to run the gauge task
         BuildResult resultWithDirProperty = defaultGradleRunner().withArguments(GAUGE_TASK, "-Pdir=" + subProject.getAbsolutePath()).build();
         assertEquals(SUCCESS, resultWithDirProperty.task(GAUGE_TASK_PATH).getOutcome());
@@ -48,9 +46,9 @@ class RunTest extends Base {
     @Test
     void testCanRunGaugeTestsWhenDirSetInExtension() throws IOException {
         final File subProject = new File(Path.of(defaultGradleRunner().getProjectDir().getPath(), "subProject").toString());
-        copyGaugeProjectToTemp(GAUGE_PROJECT_ONE, subProject);
+        copyGaugeFixtureToTemp(subProject, "simple-project");
         // Given plugin is applied
-        writeFile(buildFile, getApplyPluginsBlock() + "gauge {dir=\"subProject\"}");
+        writeFile(buildFilePath, getApplyPluginsBlock() + "gauge {dir=\"subProject\"}");
         // Then I should be able to run the gauge task
         BuildResult resultWithExtensionProperty = defaultGradleRunner().withArguments(GAUGE_TASK).build();
         assertEquals(SUCCESS, resultWithExtensionProperty.task(GAUGE_TASK_PATH).getOutcome());
@@ -60,7 +58,7 @@ class RunTest extends Base {
     void testCanRunGaugeTestsWhenSpecsDirSet() throws IOException {
         // Given plugin is applied
         // When specsDir is set in the extension with an invalid/non-existing directory
-        writeFile(buildFile, getApplyPluginsBlock() + "gauge {specsDir=\"invalid\"}\n");
+        writeFile(buildFilePath, getApplyPluginsBlock() + "gauge {specsDir=\"invalid\"}\n");
         // Then I should be able to run the gauge task
         BuildResult resultWithExtension = defaultGradleRunner().withArguments(GAUGE_TASK).buildAndFail();
         // And I should get a failure with missing specs directory
@@ -78,9 +76,9 @@ class RunTest extends Base {
         // Given plugin is applied
         // When environmentVariables is set in extension
         // And additionalFlags include the --verbose flag
-        writeFile(buildFile, getApplyPluginsBlock()
-                + "gauge {environmentVariables=['customVariable': 'customValue']\n"
-                + "additionalFlags='--simple-console --verbose'}\n");
+        writeFile(buildFilePath, getApplyPluginsBlock()
+            + "gauge {environmentVariables=['customVariable': 'customValue']\n"
+            + "additionalFlags='--simple-console --verbose'}\n");
         // Then I should be able to run the gauge task
         BuildResult resultWithExtension = defaultGradleRunner().withArguments(GAUGE_TASK).build();
         assertEquals(SUCCESS, resultWithExtension.task(GAUGE_TASK_PATH).getOutcome());
@@ -95,11 +93,11 @@ class RunTest extends Base {
         // Given plugin is applied
         // When inParallel=true is set in extension
         // And additionalFlags include the --simple-console flag
-        writeFile(buildFile, getApplyPluginsBlock()
-                + "gauge {specsDir='specs multipleSpecs'\n"
-                + "inParallel=true\n"
-                + "nodes=2\n"
-                + "additionalFlags='--simple-console'}\n");
+        writeFile(buildFilePath, getApplyPluginsBlock()
+            + "gauge {specsDir='specs multipleSpecs'\n"
+            + "inParallel=true\n"
+            + "nodes=2\n"
+            + "additionalFlags='--simple-console'}\n");
         // Then I should be able to run the gauge task
         BuildResult resultWithExtension = defaultGradleRunner().withArguments(GAUGE_TASK).build();
         assertEquals(SUCCESS, resultWithExtension.task(GAUGE_TASK_PATH).getOutcome());
@@ -122,11 +120,11 @@ class RunTest extends Base {
         // When inParallel=true is set in extension
         // And additionalFlags include the --simple-console flag
         // And tags=example1 set to run
-        writeFile(buildFile, getApplyPluginsBlock()
-                + "gauge {specsDir='specs multipleSpecs'\n"
-                + "inParallel=true\n"
-                + "additionalFlags='--simple-console'\n"
-                + "tags='example1'}");
+        writeFile(buildFilePath, getApplyPluginsBlock()
+            + "gauge {specsDir='specs multipleSpecs'\n"
+            + "inParallel=true\n"
+            + "additionalFlags='--simple-console'\n"
+            + "tags='example1'}");
         // Then I should be able to run the gauge task
         BuildResult resultWithExtension = defaultGradleRunner().withArguments(GAUGE_TASK).build();
         assertEquals(SUCCESS, resultWithExtension.task(GAUGE_TASK_PATH).getOutcome());
@@ -149,10 +147,10 @@ class RunTest extends Base {
         // When inParallel=true is set in extension
         // And additionalFlags include the --verbose flag
         // When env is set to invalid/non-existing
-        writeFile(buildFile, getApplyPluginsBlock()
-                + "gauge {inParallel=true\n"
-                + "additionalFlags='--simple-console'\n"
-                + "env='invalid'}");
+        writeFile(buildFilePath, getApplyPluginsBlock()
+            + "gauge {inParallel=true\n"
+            + "additionalFlags='--simple-console'\n"
+            + "env='invalid'}");
         // Then I should be able to run the gauge task
         BuildResult resultWithExtension = defaultGradleRunner().withArguments(GAUGE_TASK).buildAndFail();
         assertEquals(FAILED, resultWithExtension.task(GAUGE_TASK_PATH).getOutcome());
@@ -171,11 +169,11 @@ class RunTest extends Base {
         // When inParallel=true is set in extension
         // And additionalFlags include the --simple-console flag
         // When env is set to dev
-        writeFile(buildFile, getApplyPluginsBlock()
-                + "gauge {inParallel=true\n"
-                + "additionalFlags='--simple-console'\n"
-                + "nodes=2\n"
-                + "env='dev'}");
+        writeFile(buildFilePath, getApplyPluginsBlock()
+            + "gauge {inParallel=true\n"
+            + "additionalFlags='--simple-console'\n"
+            + "nodes=2\n"
+            + "env='dev'}");
         // Then I should be able to run the gauge task
         BuildResult resultWithExtension = defaultGradleRunner().withArguments(GAUGE_TASK, "--info").build();
         assertEquals(SUCCESS, resultWithExtension.task(GAUGE_TASK_PATH).getOutcome());
@@ -183,7 +181,7 @@ class RunTest extends Base {
         assertThat(resultWithExtension.getOutput(), containsString("--simple-console --parallel --n 2 --env dev specs"));
         // When additionalFlags include the --repeat flag
         BuildResult resultWithProperty = defaultGradleRunner()
-                .withArguments(GAUGE_TASK, "-PadditionalFlags=--repeat --simple-console", "--info").build();
+            .withArguments(GAUGE_TASK, "-PadditionalFlags=--repeat --simple-console", "--info").build();
         assertEquals(SUCCESS, resultWithProperty.task(GAUGE_TASK_PATH).getOutcome());
         // Then I should not see environment and parallel flags and specs include the command
         assertThat(resultWithProperty.getOutput(), not(containsString("--parallel --n 2 --env dev specs")));
@@ -196,5 +194,5 @@ class RunTest extends Base {
     private String getExpectedReportPath(final String env) {
         return Path.of("reports", env, "html-report", "index.html").toString();
     }
-
 }
+

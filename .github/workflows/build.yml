@@ -19,7 +19,8 @@ jobs:
     - uses: actions/setup-java@v5
       with:
         distribution: 'temurin'
-        java-version: '21'
+        java-version: '17' # should be same as project version
+        cache: 'gradle'
     - uses: getgauge/setup-gauge@master
       with:
         gauge-plugins: java, html-report, xml-report
@@ -27,11 +28,10 @@ jobs:
     - name: Build with Gradle on ubuntu
       if: matrix.os != 'windows-latest'
       run: |
-        ./gradlew plugin:build
+        ./gradlew build
         ./gradlew gaugeValidate gaugeDevRepeat
     - name: Build with Gradle on windows
       if: matrix.os == 'windows-latest'
       run: |
         gauge config runner_connection_timeout 300000
-        .\gradlew.bat plugin:build
-        .\gradlew.bat gaugeDevRepeat
+        .\gradlew.bat build && .\gradlew.bat gaugeValidate gaugeDevRepeat

@@ -1,66 +1,73 @@
 package org.gauge.gradle;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Objects;
 import org.apache.commons.io.FileUtils;
 import org.gradle.testkit.runner.GradleRunner;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.io.TempDir;
 
-class Base {
+abstract class Base {
 
     @TempDir
-    File primaryProjectDir;
-    File settingsFile;
-    File buildFile;
+    File testProjectDir;
+    Path settingsFilePath;
+    Path buildFilePath;
 
     protected static final String GAUGE_TASK_PATH = ":gauge";
 
     @BeforeEach
     void setup() {
-        settingsFile = new File(primaryProjectDir, "settings.gradle");
-        buildFile = new File(primaryProjectDir, "build.gradle");
+        final Path testProjectPath = testProjectDir.toPath();
+        settingsFilePath = testProjectPath.resolve("settings.gradle");
+        buildFilePath = testProjectPath.resolve("build.gradle");
     }
 
-    protected void writeFile(File destination, String content) throws IOException {
-        try (BufferedWriter output = new BufferedWriter(new FileWriter(destination))) {
-            output.write(content);
-        }
+    protected void writeFile(final Path destination, String content) throws IOException {
+        Files.writeString(destination, content);
     }
 
-    protected void copyGaugeProjectToTemp(final String project) {
-        copyGaugeProjectToTemp(project, primaryProjectDir);
+    protected void copyGaugeFixtureToTemp()
+        throws IOException {
+        copyGaugeFixtureToTemp(testProjectDir, "simple-project");
     }
 
-    protected void copyGaugeProjectToTemp(final String project, final File testProjectDir) {
-        final Path gaugeProjectPath = Path.of("testProjects", project);
+    protected void copyGaugeFixtureToTemp(final File testProjectDir, final String fixtureName) throws IOException {
         try {
-            final URL gaugeProject = Thread.currentThread().getContextClassLoader().getResource(gaugeProjectPath.toString());
-            Assertions.assertNotNull(gaugeProject, "Could not find the gauge project");
-            FileUtils.copyDirectory(new File(gaugeProject.toURI()), testProjectDir);
+            URL resource = Objects.requireNonNull(
+                Thread.currentThread().getContextClassLoader()
+                    .getResource("fixtures/" + fixtureName),
+                "Could not find fixture: " + fixtureName
+            );
+            FileUtils.copyDirectory(Path.of(resource.toURI()).toFile(), testProjectDir);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new IOException("Failed to copy fixture: " + fixtureName, e);
         }
     }
 
     protected String getApplyPluginsBlock() {
         return """
-            plugins {id 'org.gauge'}
-            repositories {mavenLocal()
-            mavenCentral()}
-            dependencies {testImplementation 'com.thoughtworks.gauge:gauge-java:+'}
+            plugins {
+              id 'org.gauge'
+            }
+            repositories {
+              mavenLocal()
+              mavenCentral()
+            }
+            dependencies {
+              testImplementation 'com.thoughtworks.gauge:gauge-java:+'
+            }
             """;
     }
 
     protected GradleRunner defaultGradleRunner() {
         return GradleRunner.create()
-                .withProjectDir(primaryProjectDir)
-                .withPluginClasspath();
+            .withProjectDir(testProjectDir)
+            .withPluginClasspath();
     }
 
 }
