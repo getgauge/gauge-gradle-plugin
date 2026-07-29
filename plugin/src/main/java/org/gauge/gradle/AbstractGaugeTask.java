@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Abstract base class for Gauge tasks, providing common functionality for Gauge-related Gradle tasks.
  */
-@DisableCachingByDefault
+@DisableCachingByDefault(because = "Runs Gauge as an external process and does not produce cacheable outputs.")
 public abstract class AbstractGaugeTask extends DefaultTask {
     /**
      * Logger instance for Gauge tasks.

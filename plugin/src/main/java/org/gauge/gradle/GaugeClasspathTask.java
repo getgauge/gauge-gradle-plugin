@@ -9,12 +9,14 @@ package org.gauge.gradle;
 import javax.inject.Inject;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.Project;
+import org.gradle.api.tasks.CacheableTask;
 import org.gradle.api.tasks.SourceSetContainer;
 import org.gradle.api.tasks.TaskAction;
 
 /**
  * Task to print the test runtime classpath for Gauge.
  */
+@CacheableTask
 public abstract class GaugeClasspathTask extends DefaultTask {
 
     private final Project project;

@@ -27,6 +27,7 @@ testing {
         configureEach {
             useJUnitJupiter()
             dependencies {
+                implementation gradleApi()
                 implementation "org.junit.jupiter:junit-jupiter:6.+"
                 runtimeOnly "org.junit.platform:junit-platform-launcher"
             }
