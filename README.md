@@ -28,7 +28,7 @@ If you have an existing project, and you would like to add the plugin manually y
 
 ```groovy
 plugins {
-    id 'org.gauge' version '4.0.0'
+    id 'org.gauge' version '3.2.0'
 }
 
 repositories {
