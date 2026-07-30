@@ -4,10 +4,12 @@ import javax.inject.Inject;
 import org.gradle.api.Project;
 import org.gradle.process.ExecOperations;
 import org.gradle.process.ExecSpec;
+import org.gradle.work.DisableCachingByDefault;
 
 /**
  * Task to run the Gauge test suite.
  */
+@DisableCachingByDefault(because = "Runs Gauge as an external process and does not produce cacheable outputs.")
 public abstract class GaugeTask extends AbstractGaugeTask {
 
     /**

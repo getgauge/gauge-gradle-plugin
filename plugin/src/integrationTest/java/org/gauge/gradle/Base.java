@@ -2,6 +2,7 @@ package org.gauge.gradle;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -44,7 +45,7 @@ abstract class Base {
                 "Could not find fixture: " + fixtureName
             );
             FileUtils.copyDirectory(Path.of(resource.toURI()).toFile(), testProjectDir);
-        } catch (Exception e) {
+        } catch (IOException | URISyntaxException e) {
             throw new IOException("Failed to copy fixture: " + fixtureName, e);
         }
     }
@@ -60,6 +61,9 @@ abstract class Base {
             }
             dependencies {
               testImplementation 'com.thoughtworks.gauge:gauge-java:+'
+            }
+            tasks.withType(AbstractTestTask).configureEach {
+                failOnNoDiscoveredTests = false
             }
             """;
     }
