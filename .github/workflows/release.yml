@@ -16,7 +16,8 @@ jobs:
       - uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
-          java-version: '21'
+          java-version: '25' # Version for gradle to run with
+          cache: 'gradle'
       - uses: getgauge/setup-gauge@master
         with:
           gauge-plugins: java, html-report, xml-report

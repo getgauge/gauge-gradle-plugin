@@ -1,28 +1,28 @@
 import org.gauge.gradle.GaugeTask
 
 plugins {
-    id 'java'
-    id 'jvm-test-suite'
     id 'org.gauge'
-    id 'pmd'
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
 }
 
+def defaultToolchainJdkVersion = JavaLanguageVersion.current()
+def testToolchainJdkVersion = providers.gradleProperty("testToolchainJdkVersion")
+        .map(JavaLanguageVersion::of)
+        .orElse(defaultToolchainJdkVersion)
+
+logger.lifecycle("Sample targets ${testToolchainJdkVersion.get()} using JDK ${testToolchainJdkVersion.get()}")
+
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    toolchain {
+        languageVersion = testToolchainJdkVersion
+    }
 }
 
 tasks.withType(JavaCompile).configureEach {
-    options.release = 17
-}
-
-pmd {
-    consoleOutput = true
+    options.release = testToolchainJdkVersion.get().asInt()
 }
 
 sourceSets {
@@ -55,7 +55,7 @@ gauge {
     additionalFlags = '--verbose'
 }
 
-tasks.register('gaugeDev', GaugeTask) {
+def gaugeDev = tasks.register('gaugeDev', GaugeTask) {
     doFirst {
         gauge {
             specsDir = 'specs'
@@ -67,8 +67,8 @@ tasks.register('gaugeDev', GaugeTask) {
     }
 }
 
-tasks.register('gaugeDevRepeat', GaugeTask) {
-    dependsOn("gaugeDev")
+def gaugeDevRepeat = tasks.register('gaugeDevRepeat', GaugeTask) {
+    dependsOn(gaugeDev)
     doFirst {
         gauge {
             additionalFlags = '--repeat --simple-console'
@@ -79,3 +79,9 @@ tasks.register('gaugeDevRepeat', GaugeTask) {
 tasks.withType(AbstractTestTask).configureEach {
     failOnNoDiscoveredTests = false
 }
+
+def pluginCheck = gradle.includedBuild("plugin").task(":check")
+tasks.gaugeValidate.dependsOn(pluginCheck)
+tasks.gaugeDev.dependsOn(pluginCheck)
+
+tasks.check.dependsOn(gaugeValidate, gaugeDevRepeat)

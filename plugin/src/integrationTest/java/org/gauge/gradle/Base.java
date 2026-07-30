@@ -7,12 +7,15 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
+
 import org.apache.commons.io.FileUtils;
 import org.gradle.testkit.runner.GradleRunner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.io.TempDir;
 
 abstract class Base {
+
+    public static final String SUPPORTED_GRADLE_VERSIONS_FOR_CURRENT_JVM = "org.gauge.gradle.GradleTestVersion#supportedVersionsForCurrentJvm";
 
     @TempDir
     File testProjectDir;
@@ -56,20 +59,20 @@ abstract class Base {
               id 'org.gauge'
             }
             repositories {
-              mavenLocal()
               mavenCentral()
             }
             dependencies {
               testImplementation 'com.thoughtworks.gauge:gauge-java:+'
             }
             tasks.withType(AbstractTestTask).configureEach {
-                failOnNoDiscoveredTests = false
+                if (GradleVersion.current().version >= '9') failOnNoDiscoveredTests = false
             }
             """;
     }
 
-    protected GradleRunner defaultGradleRunner() {
+    protected GradleRunner defaultGradleRunner(GradleTestVersion gradle) {
         return GradleRunner.create()
+            .withGradleVersion(gradle.version)
             .withProjectDir(testProjectDir)
             .withPluginClasspath();
     }

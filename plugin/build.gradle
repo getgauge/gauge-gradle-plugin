@@ -8,14 +8,25 @@ plugins {
 group = "org.gauge.gradle"
 
 repositories {
-    mavenLocal()
     mavenCentral()
 }
 
+def targetJavaVersion = 17
+def defaultToolchainJdkVersion = JavaLanguageVersion.of(25)
+def testToolchainJdkVersion = providers.gradleProperty("testToolchainJdkVersion")
+        .map(JavaLanguageVersion::of)
+        .orElse(defaultToolchainJdkVersion)
+
+logger.lifecycle("Build targets $targetJavaVersion using JDK $defaultToolchainJdkVersion (test with JDK ${testToolchainJdkVersion.get()})")
+
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = defaultToolchainJdkVersion
     }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release.set(targetJavaVersion)
 }
 
 pmd {
@@ -43,6 +54,9 @@ testing {
             targets {
                 all {
                     testTask.configure {
+                        javaLauncher = javaToolchains.launcherFor {
+                            languageVersion = testToolchainJdkVersion
+                        }
                         shouldRunAfter(tasks.named("test"))
                     }
                 }
@@ -52,6 +66,9 @@ testing {
 }
 
 tasks.withType(Test).configureEach {
+    javaLauncher = javaToolchains.launcherFor {
+        languageVersion = testToolchainJdkVersion
+    }
     testLogging {
         showStandardStreams = true
         showStackTraces = true

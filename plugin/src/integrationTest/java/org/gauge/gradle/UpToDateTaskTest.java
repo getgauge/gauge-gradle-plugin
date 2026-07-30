@@ -7,39 +7,43 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import org.gradle.testkit.runner.GradleRunner;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class UpToDateTaskTest extends Base {
 
-    @Test
-    void testGaugeTaskIsNotCached() throws IOException {
+    @ParameterizedTest
+    @MethodSource(SUPPORTED_GRADLE_VERSIONS_FOR_CURRENT_JVM)
+    void testGaugeTaskIsNotCached(GradleTestVersion gradle) throws IOException {
         copyGaugeFixtureToTemp();
         // Given plugin is applied
         writeFile(buildFilePath, getApplyPluginsBlock());
         // Then I should be able to run the gauge task
-        GradleRunner runner = defaultGradleRunner().withArguments(GAUGE_TASK);
+        GradleRunner runner = defaultGradleRunner(gradle).withArguments(GAUGE_TASK);
         assertEquals(SUCCESS, runner.build().task(GAUGE_TASK_PATH).getOutcome());
         assertEquals(SUCCESS, runner.build().task(GAUGE_TASK_PATH).getOutcome());
     }
 
-    @Test
-    void testGaugeValidateTaskIsNotCached() throws IOException {
+    @ParameterizedTest
+    @MethodSource(SUPPORTED_GRADLE_VERSIONS_FOR_CURRENT_JVM)
+    void testGaugeValidateTaskIsNotCached(GradleTestVersion gradle) throws IOException {
         copyGaugeFixtureToTemp();
         // Given plugin is applied
         writeFile(buildFilePath, getApplyPluginsBlock());
         // Then I should be able to run the gauge task
-        GradleRunner runner = defaultGradleRunner().withArguments("gaugeValidate");
+        GradleRunner runner = defaultGradleRunner(gradle).withArguments("gaugeValidate");
         assertEquals(SUCCESS, runner.build().task(":gaugeValidate").getOutcome());
         assertEquals(SUCCESS, runner.build().task(":gaugeValidate").getOutcome());
     }
 
-    @Test
-    void testGaugeClasspathTaskIsNotCached() throws IOException {
+    @ParameterizedTest
+    @MethodSource(SUPPORTED_GRADLE_VERSIONS_FOR_CURRENT_JVM)
+    void testGaugeClasspathTaskIsNotCached(GradleTestVersion gradle) throws IOException {
         copyGaugeFixtureToTemp();
         // Given plugin is applied
         writeFile(buildFilePath, getApplyPluginsBlock());
         // Then I should be able to run the gauge task
-        GradleRunner runner = defaultGradleRunner().withArguments(GAUGE_CLASSPATH_TASK);
+        GradleRunner runner = defaultGradleRunner(gradle).withArguments(GAUGE_CLASSPATH_TASK);
         assertEquals(SUCCESS, runner.build().task(":" + GAUGE_CLASSPATH_TASK).getOutcome());
         assertEquals(SUCCESS, runner.build().task(":" + GAUGE_CLASSPATH_TASK).getOutcome());
     }
