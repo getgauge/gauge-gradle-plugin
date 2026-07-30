@@ -64,7 +64,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath "org.gauge.gradle:gauge-gradle-plugin:4.0.0"
+        classpath "org.gauge.gradle:gauge-gradle-plugin:3.2.0"
     }
 }
 
