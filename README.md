@@ -6,10 +6,12 @@
 
 Use the gauge-gradle-plugin to execute specifications in your [Gauge](https://gauge.org) Java project and manage dependencies using [Gradle](http://gradle.org//).
 
-> **NOTE**: Prior to v1.8.0 the `gauge-gradle-plugin` had a different community maintainer. Versions prior to this were published to
-> Maven Central & Bintray; with out-of-date versions available on the Gradle Plugins Portal.
->
-> From v1.8.0+ [the Gradle Plugins Portal](https://plugins.gradle.org/plugin/org.gauge) will be the primary means of release for this plugin; under the care of the core Gauge team.
+## Requirements
+
+- Gradle 7.x - 9.x
+  - Gradle running with JDK LTS 17 - 25
+- Gauge 1.x
+  - gauge-java plugin installed with matching version on project's Gradle classpath
 
 ## Installation
 
@@ -190,4 +192,4 @@ includeBuild {PATH_TO_GRADLE_PLUGIN}
 
 ## License
 
-Gauge is released under the Apache License, Version 2.0. See [LICENSE](LICENSE.txt) for the full license text.
+Released under the Apache License, Version 2.0. See [LICENSE](LICENSE.txt) for the full license text.
