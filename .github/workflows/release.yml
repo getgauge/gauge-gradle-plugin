@@ -16,7 +16,7 @@ jobs:
       - uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
-          java-version: '25' # Version for gradle to run with
+          java-version: '25' # Version for gradle to run with, usually should match defaultToolchainJdkVersion in plugin/build.gradle
           cache: 'gradle'
       - uses: getgauge/setup-gauge@master
         with:

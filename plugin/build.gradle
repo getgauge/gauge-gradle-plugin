@@ -12,12 +12,12 @@ repositories {
 }
 
 def targetJavaVersion = 17
-def defaultToolchainJdkVersion = JavaLanguageVersion.of(25)
+def defaultToolchainJdkVersion = JavaLanguageVersion.of(25) // Usually should match "default" version in build.yml/release.yml
 def testToolchainJdkVersion = providers.gradleProperty("testToolchainJdkVersion")
         .map(JavaLanguageVersion::of)
         .orElse(defaultToolchainJdkVersion)
 
-logger.lifecycle("Build targets $targetJavaVersion using JDK $defaultToolchainJdkVersion (test with JDK ${testToolchainJdkVersion.get()})")
+logger.lifecycle("Plugin targets Java $targetJavaVersion compatibility via build JDK $defaultToolchainJdkVersion (test with JDK ${testToolchainJdkVersion.get()})")
 
 java {
     toolchain {

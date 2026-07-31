@@ -21,7 +21,7 @@ jobs:
     - uses: actions/setup-java@v5
       with:
         distribution: 'temurin'
-        java-version: | # last version takes precedence as default
+        java-version: | # Last version is default to run Gradle with, usually should match defaultToolchainJdkVersion in plugin/build.gradle
           ${{ matrix.java-test-version }}
           25
         cache: gradle

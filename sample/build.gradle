@@ -8,12 +8,11 @@ repositories {
     mavenCentral()
 }
 
-def defaultToolchainJdkVersion = JavaLanguageVersion.current()
 def testToolchainJdkVersion = providers.gradleProperty("testToolchainJdkVersion")
         .map(JavaLanguageVersion::of)
-        .orElse(defaultToolchainJdkVersion)
+        .orElse(JavaLanguageVersion.current())
 
-logger.lifecycle("Sample targets ${testToolchainJdkVersion.get()} using JDK ${testToolchainJdkVersion.get()}")
+logger.lifecycle("Sample targets Java ${testToolchainJdkVersion.get()} compatibility using JDK ${testToolchainJdkVersion.get()}")
 
 java {
     toolchain {
@@ -22,7 +21,7 @@ java {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    options.release = testToolchainJdkVersion.get().asInt()
+    options.release.set(testToolchainJdkVersion.get().asInt())
 }
 
 sourceSets {
